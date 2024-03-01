@@ -13,21 +13,21 @@ namespace WpfApp2;
 
 public class MyShapeList
 {
-    private List<MySprite> shapes; // Список фигур
+    private List<MySprite> shapes; 
 
-    // Конструктор
+   
     public MyShapeList()
     {
-        shapes = new List<MySprite>(); // Инициализируем список фигур
+        shapes = new List<MySprite>(); 
     }
 
-    // Метод для добавления фигуры в список
+   
     public void AddShape(MySprite mySprite)
     {
-        shapes.Add(mySprite); // Добавляем фигуру в список
+        shapes.Add(mySprite); 
     }
 
-    // Метод для рисования всех фигур на Canvas
+    
     public void DrawAll(Canvas canvas)
     {
         shapes.ForEach(shape => shape.Draw(canvas));

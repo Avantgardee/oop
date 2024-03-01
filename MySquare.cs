@@ -13,14 +13,18 @@ namespace WpfApp2;
 
 public class MySquare : MyRectangle
 {
-    // Конструктор с параметрами верхней левой точки и длины стороны квадрата
+    
     public MySquare(Point topLeftPoint, double sideLength)
         : base(topLeftPoint, sideLength, sideLength)
     {
+        _rotationAngle = 0;
+        CalculateCenter();
     }
-    public MySquare(Point topLeftPoint, double sideLength, Brush fillColor, Brush strokeColor)
-        : base(fillColor, strokeColor,topLeftPoint,sideLength,sideLength)
+    public MySquare(Point topLeftPoint, double sideLength, double rotationAngle, Brush fillColor, Brush strokeColor)
+        : base(fillColor, strokeColor,rotationAngle, topLeftPoint,sideLength,sideLength)
     {
+        _rotationAngle = rotationAngle;
+        CalculateCenter();
     }
     
     

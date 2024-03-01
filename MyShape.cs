@@ -15,14 +15,14 @@ public abstract class MyShape : MySprite
 {
     public Point[] Points { get; set; }
 
-    // Конструктор с параметрами цвета заливки и обводки
+    
     public MyShape(Brush fillColor, Brush strokeColor, Point[] points)
         : base(fillColor, strokeColor)
     {
         Points = points ?? throw new ArgumentNullException(nameof(points));
     }
 
-    // Конструктор без параметров (с голубыми цветами по умолчанию)
+   
     public MyShape(Point[] points)
         : base()
     {

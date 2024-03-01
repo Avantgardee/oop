@@ -12,37 +12,65 @@ using System.Windows.Shapes;
 namespace WpfApp2;
 public class MyPolygon : MyShape
 {
-    // Конструктор с параметрами цвета заливки и обводки, и массива точек многоугольника
-    public MyPolygon(System.Windows.Media.Brush fillColor, System.Windows.Media.Brush strokeColor, System.Windows.Point[] points)
+    
+    protected double _rotationAngle;
+    protected Point _center;
+
+    
+    public MyPolygon(Brush fillColor, Brush strokeColor, double rotationAngle, Point[] points)
         : base(fillColor, strokeColor, points)
     {
-        // Проверка на количество точек
-        // if (points.Length < 3)
-        //     throw new ArgumentException("Polygon must have at least three points.", nameof(points));
-
+        _rotationAngle = rotationAngle;
+        CalculateCenter();
     }
 
-    // Конструктор без параметров (с голубыми цветами по умолчанию) и массива точек многоугольника
-    public MyPolygon(System.Windows.Point[] points)
+
+    public MyPolygon(Point[] points)
         : base(points)
     {
-        // Проверка на количество точек
-        // if (points.Length < 3)
-        //     throw new ArgumentException("Polygon must have at least three points.", nameof(points));
-
+        _rotationAngle = 0;
+        CalculateCenter();
     }
+    protected void CalculateCenter()
+    {
+        double totalX = 0;
+        double totalY = 0;
 
-    // Реализация метода Draw для отрисовки многоугольника
+        foreach (var point in Points)
+        {
+            totalX += point.X;
+            totalY += point.Y;
+        }
+
+        _center = new Point(totalX / Points.Length, totalY / Points.Length);
+    }
+   
     public override void Draw(Canvas canvas)
     {
         Polygon polygon = new Polygon();
         polygon.Fill = FillColor;
         polygon.Stroke = StrokeColor;
-        polygon.Points = new PointCollection(Points);
+        polygon.Points = RotatePoints(Points, _rotationAngle);
         canvas.Children.Add(polygon);
     }
 
-    // Метод для добавления точки в массив точек многоугольника
+    protected PointCollection RotatePoints(Point[] points, double angle)
+    {
+        double angleInRadians = angle * Math.PI / 180.0;
+        PointCollection rotatedPoints = new PointCollection();
+
+        double cosAngle = Math.Cos(angleInRadians);
+        double sinAngle = Math.Sin(angleInRadians);
+
+        foreach (var point in points)
+        {
+            double rotatedX = _center.X + (point.X - _center.X) * cosAngle - (point.Y - _center.Y) * sinAngle;
+            double rotatedY = _center.Y + (point.X - _center.X) * sinAngle + (point.Y - _center.Y) * cosAngle;
+            rotatedPoints.Add(new Point(rotatedX, rotatedY));
+        }
+
+        return rotatedPoints;
+    }
     protected void AddPoint(Point point)
     {
         List<Point> pointsList = new List<Point>(Points);
@@ -50,7 +78,7 @@ public class MyPolygon : MyShape
         Points = pointsList.ToArray();
     }
 
-    // Метод для удаления последней точки из массива точек многоугольника
+    
     protected void RemoveLastPoint()
     {
         if (Points.Length > 0)

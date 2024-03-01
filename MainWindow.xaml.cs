@@ -26,21 +26,21 @@ public partial class MainWindow : Window
             new Point(50, 200), new Point(300 + 100 * Math.Sqrt(3), 300), new Point(100 * Math.Sqrt(3), 300),
             new Point(0, 200), new Point(100 * Math.Sqrt(3), 100), new Point(300 + 100 * Math.Sqrt(3), 100)
         };
-        MyPolygon pol = new MyPolygon(Brushes.Brown, Brushes.Blue, shesti);
+        MyPolygon pol = new MyPolygon(Brushes.Brown, Brushes.Blue,20, shesti);
         myShapeList.AddShape(pol);
         
         MyCircle circle = new MyCircle(Brushes.Red, Brushes.Black,  new Point(100, 100),50 );
         myShapeList.AddShape(circle);
 
-        MyRectangle rectangle = new MyRectangle(Brushes.Red, Brushes.Black, new Point(400, 200),50,20 );
+        MyRectangle rectangle = new MyRectangle(Brushes.Red, Brushes.Black, 45,new Point(400, 200),50,20 );
         
         myShapeList.AddShape(rectangle);
 
         Point[] trianglePoints = { new Point(60, 100), new Point(400, 200), new Point(200, 200) };
-        MyTriangle triangle = new MyTriangle(Brushes.Green, Brushes.Black, trianglePoints);
+        MyTriangle triangle = new MyTriangle(Brushes.Green, Brushes.Black,60, trianglePoints);
         myShapeList.AddShape(triangle);
         
-        MySquare square = new MySquare(new Point(500,100), 100);
+        MySquare square = new MySquare(new Point(500,100), 100, 45,Brushes.Green, Brushes.Black);
         
         myShapeList.AddShape(square);
 

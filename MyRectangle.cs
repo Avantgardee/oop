@@ -15,34 +15,38 @@ namespace WpfApp2;
 public class MyRectangle : MyPolygon
 {
     // Конструктор с параметрами цвета заливки и обводки, верхней левой точки, ширины и длины прямоугольника
-    public MyRectangle(Brush fillColor, Brush strokeColor, Point topLeftPoint, double width, double height)
-        : base(fillColor, strokeColor, new Point[0])
+    public MyRectangle(Brush fillColor, Brush strokeColor, double rotationAngle,  Point topLeftPoint, double width, double height)
+        : base(fillColor, strokeColor,rotationAngle, new Point[0])
     {
         AddRectanglePoints(topLeftPoint, width, height);
+        _rotationAngle = rotationAngle;
+        CalculateCenter();
     }
 
-    // Конструктор без параметров (с голубыми цветами по умолчанию), верхней левой точки, ширины и длины прямоугольника
+    
     public MyRectangle(Point topLeftPoint, double width, double height)
         : base(new Point[0])
     {
         AddRectanglePoints(topLeftPoint, width, height);
+        _rotationAngle = 0;
+        CalculateCenter();
     }
 
-    // Метод для добавления точек прямоугольника в массив точек
+   
     private void AddRectanglePoints(Point topLeftPoint, double width, double height)
     {
-        // Добавляем верхнюю левую точку
+        
         AddPoint(topLeftPoint);
 
-        // Добавляем верхнюю правую точку
+        
         Point topRightPoint = new Point(topLeftPoint.X + width, topLeftPoint.Y);
         AddPoint(topRightPoint);
 
-        // Добавляем нижнюю правую точку
+   
         Point bottomRightPoint = new Point(topLeftPoint.X + width, topLeftPoint.Y + height);
         AddPoint(bottomRightPoint);
 
-        // Добавляем нижнюю левую точку
+      
         Point bottomLeftPoint = new Point(topLeftPoint.X, topLeftPoint.Y + height);
         AddPoint(bottomLeftPoint);
     }

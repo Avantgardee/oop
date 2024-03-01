@@ -13,14 +13,14 @@ namespace WpfApp2;
 
 public class MyTriangle : MyPolygon
 {
-    // Конструктор с параметрами цвета заливки и обводки, и массива точек треугольника
-    public MyTriangle(Brush fillColor, Brush strokeColor, Point[] points)
-        : base(fillColor, strokeColor, points)
+   
+    public MyTriangle(Brush fillColor, Brush strokeColor,double rotationAngle, Point[] points)
+        : base(fillColor, strokeColor,rotationAngle, points)
     {
-        // Проверяем, что переданный массив точек содержит 3 точки
+        
         if (points.Length == 3)
         {
-            Points = points; // Присваиваем массив точек полю Points
+            Points = points; 
         }
         else
         {
@@ -32,7 +32,7 @@ public class MyTriangle : MyPolygon
     {
         if (points.Length == 3)
         {
-            Points = points; // Присваиваем массив точек полю Points
+            Points = points;
         }
         else
         {

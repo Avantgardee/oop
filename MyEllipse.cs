@@ -16,7 +16,7 @@ public class MyEllipse : MySprite
     public double RadiusX { get; set; }
     public double RadiusY { get; set; }
 
-    // Конструктор с параметрами цвета заливки и обводки, центра и радиусов эллипса
+   
     public MyEllipse(Brush fillColor, Brush strokeColor, Point center, double radiusX, double radiusY)
         : base(fillColor, strokeColor)
     {
@@ -25,7 +25,7 @@ public class MyEllipse : MySprite
         RadiusY = radiusY;
     }
 
-    // Конструктор без параметров (с голубыми цветами по умолчанию) и центра и радиусов эллипса
+
     public MyEllipse(Point center, double radiusX, double radiusY)
         : base()
     {
@@ -34,7 +34,7 @@ public class MyEllipse : MySprite
         RadiusY = radiusY;
     }
 
-    // Реализация метода Draw для отрисовки эллипса
+    
     public override void Draw(Canvas canvas)
     {
         Ellipse ellipse = new Ellipse();
