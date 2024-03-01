@@ -13,7 +13,7 @@ namespace WpfApp2;
 
 public abstract class MyShape : MySprite
 {
-    public Point[] Points { get; set; }
+    protected Point[] Points { get; set; }
 
     
     public MyShape(Brush fillColor, Brush strokeColor, Point[] points)
