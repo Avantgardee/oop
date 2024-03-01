@@ -44,7 +44,7 @@ public partial class MainWindow : Window
         
         myShapeList.AddShape(square);
 
-        MyEllipse el = new MyEllipse(Brushes.Chartreuse, Brushes.Red, new Point(600, 300), 40, 80);
+        MyEllipse el = new MyEllipse(Brushes.Chartreuse, Brushes.Red, new Point(300, 300), 40, 80);
         myShapeList.AddShape(el);
         
         Point[] brokPoints =
