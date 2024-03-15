@@ -14,8 +14,8 @@ namespace WpfApp2;
 public class MyTriangle : MyPolygon
 {
    
-    public MyTriangle(Brush fillColor, Brush strokeColor,double rotationAngle, Point[] points)
-        : base(fillColor, strokeColor,rotationAngle, points)
+    public MyTriangle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor,points,rotationAngle)
     {
         
         if (points.Length == 3)
@@ -26,18 +26,8 @@ public class MyTriangle : MyPolygon
         {
             throw new ArgumentException("Треугольник должен иметь 3 точки");
         }
+        CalculateCenter();
     }
-
-    public MyTriangle(Point[] points) : base(points)
-    {
-        if (points.Length == 3)
-        {
-            Points = points;
-        }
-        else
-        {
-            throw new ArgumentException("Треугольник должен иметь 3 точки");
-        }
-    }
+    
 
 }

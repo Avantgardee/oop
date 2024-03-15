@@ -14,29 +14,14 @@ namespace WpfApp2;
 public class MyBrokenLine : MyShape
 {
  
-    public MyBrokenLine(Brush fillColor, Brush strokeColor, Point[] points)
-        : base(fillColor, strokeColor, points)
+    public MyBrokenLine(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor, points, rotationAngle)
     {
        
         if (points.Length < 2)
             throw new ArgumentException("Broken line must have at least two points.", nameof(points));
+        CalculateCenter();
     }
 
-
-    public MyBrokenLine(Point[] points)
-        : base(points)
-    {
-      
-        if (points.Length < 2)
-            throw new ArgumentException("Broken line must have at least two points.", nameof(points));
-    }
-
-
-    public override void Draw(Canvas canvas)
-    {
-        Polyline polyline = new Polyline();
-        polyline.Stroke = StrokeColor;
-        polyline.Points = new PointCollection(Points);
-        canvas.Children.Add(polyline);
-    }
+    
 }

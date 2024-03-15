@@ -13,19 +13,28 @@ namespace WpfApp2;
 
 public class MySquare : MyRectangle
 {
-    
-    public MySquare(Point topLeftPoint, double sideLength)
-        : base(topLeftPoint, sideLength, sideLength)
+    public MySquare( Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor, points, rotationAngle)
     {
-        _rotationAngle = 0;
+        AddRectanglePoints(points[0], points[1]);
         CalculateCenter();
     }
-    public MySquare(Point topLeftPoint, double sideLength, double rotationAngle, Brush fillColor, Brush strokeColor)
-        : base(fillColor, strokeColor,rotationAngle, topLeftPoint,sideLength,sideLength)
+    protected override void AddRectanglePoints(Point topLeftPoint, Point bottomRightPoint)
     {
-        _rotationAngle = rotationAngle;
-        CalculateCenter();
+        Points = new Point[0];
+        // Добавляем верхнюю левую точку
+        AddPoint(topLeftPoint);
+
+        // Добавляем верхнюю правую точку
+        Point topRightPoint = new Point(bottomRightPoint.X, topLeftPoint.Y);
+        AddPoint(topRightPoint);
+
+        // Добавляем нижнюю правую точку
+        Point newBottomRightPoint = new Point(bottomRightPoint.X, topLeftPoint.Y + Math.Abs(bottomRightPoint.X - topLeftPoint.X));
+        AddPoint(newBottomRightPoint);
+
+        // Добавляем нижнюю левую точку
+        Point bottomLeftPoint = new Point(topLeftPoint.X, newBottomRightPoint.Y);
+        AddPoint(bottomLeftPoint);
     }
-    
-    
 }

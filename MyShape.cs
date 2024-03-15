@@ -13,19 +13,10 @@ namespace WpfApp2;
 
 public abstract class MyShape : MySprite
 {
-    protected Point[] Points { get; set; }
-
-    
-    public MyShape(Brush fillColor, Brush strokeColor, Point[] points)
-        : base(fillColor, strokeColor)
+    public MyShape(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor, points, rotationAngle)
     {
         Points = points ?? throw new ArgumentNullException(nameof(points));
     }
-
    
-    public MyShape(Point[] points)
-        : base()
-    {
-        Points = points ?? throw new ArgumentNullException(nameof(points));
-    }
 }

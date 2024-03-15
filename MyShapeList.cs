@@ -28,8 +28,5 @@ public class MyShapeList
     }
 
     
-    public void DrawAll(Canvas canvas)
-    {
-        shapes.ForEach(shape => shape.Draw(canvas));
-    }
+   
 }

@@ -14,22 +14,50 @@ namespace WpfApp2;
 
 public abstract class MySprite
 {
+    public double _rotationAngle;
+    public Point _center;
     public Brush FillColor { get; set; }
     public Brush StrokeColor { get; set; }
 
-   
-    public MySprite(Brush fillColor, Brush strokeColor)
+    public Point[] Points { get; set; }
+    public MySprite(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
     {
         FillColor = fillColor;
         StrokeColor = strokeColor;
+        Points = points;
+        _rotationAngle = rotationAngle;
+       
     }
-
-    public MySprite()
+    public PointCollection RotatePoints(Point[] points, double angle)
     {
-        FillColor = Brushes.LightBlue;
-        StrokeColor = Brushes.Blue;
-    }
+        double angleInRadians = angle * Math.PI / 180.0;
+        PointCollection rotatedPoints = new PointCollection();
 
+        double cosAngle = Math.Cos(angleInRadians);
+        double sinAngle = Math.Sin(angleInRadians);
+
+        foreach (var point in points)
+        {
+            double rotatedX = _center.X + (point.X - _center.X) * cosAngle - (point.Y - _center.Y) * sinAngle;
+            double rotatedY = _center.Y + (point.X - _center.X) * sinAngle + (point.Y - _center.Y) * cosAngle;
+            rotatedPoints.Add(new Point(rotatedX, rotatedY));
+        }
+
+        return rotatedPoints;
+    }
+    public void CalculateCenter()
+    {
+        double totalX = 0;
+        double totalY = 0;
+
+        foreach (var point in Points)
+        {
+            totalX += point.X;
+            totalY += point.Y;
+        }
+
+        _center = new Point(totalX / Points.Length, totalY / Points.Length);
+    }
+    
    
-    public abstract void Draw(Canvas canvas);
 }

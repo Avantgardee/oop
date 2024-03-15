@@ -4,9 +4,51 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp2"
+        xmlns:hw="http://schemas.hpod9.com/haley/wpf"
         mc:Ignorable="d"
+     
     Title="MainWindow" Height="800" Width="1200">
     <Grid>
-        <Canvas Background="Transparent" Name="Canvas" />
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>     
+       
+        <Canvas Grid.Column="0"  Background="Transparent" Name="Canvas" 
+                PreviewMouseRightButtonDown="Canvas_OnPreviewMouseRightButtonDown"
+                PreviewMouseLeftButtonDown="Canvas_OnPreviewMouseLeftButtonDown"
+                PreviewMouseMove="Canvas_OnPreviewMouseMove"
+                MouseUp="Canvas_OnMouseUp"
+                PreviewMouseWheel="Window_MouseWheel"
+                PreviewMouseDown="Canvas_PreviewMouseDown"
+                />
+        
+        <ScrollViewer Grid.Column="1"  VerticalScrollBarVisibility="Visible"  >
+        <StackPanel >
+            <hw:ColorPickerButton Name="FillColorPicker" Content="Заливка" SelectedBrush="Black" Height="60" Width="60"/>
+            <hw:ColorPickerButton Name="PenColorPicker" Content="обводка" SelectedBrush="Black" Height="60" Width="60"/>
+            <Button Background="Transparent" Height="60" Width="60" Tag="0" Click="ToolBtnClick">
+                <Image Source="./img/1.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="White" Height="60" Width="60" Tag="1" Click="ToolBtnClick">
+                <Image Source="./img/2.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="Red" Height="60" Width="60" Tag="2" Click="ToolBtnClick">
+                <Image Source="./img/3.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="Blue"  Height="60" Width="60" Tag="3" Click="ToolBtnClick">
+                <Image Source="./img/4.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="White"  Height="60" Width="60" Tag="4" Click="ToolBtnClick">
+                <Image Source="./img/5.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="Red"  Height="60" Width="60" Tag="5" Click="ToolBtnClick">
+                <Image Source="./img/6.png" Width="60" Height="60"/>
+            </Button>
+            <Button Background="Red"  Height="60" Width="60" Tag="6" Click="ToolBtnClick">
+                <Image Source="./img/7.png" Width="60" Height="60"/>
+            </Button>
+        </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

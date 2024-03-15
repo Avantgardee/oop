@@ -17,33 +17,25 @@ public class MyEllipse : MySprite
     public double RadiusY { get; set; }
 
    
-    public MyEllipse(Brush fillColor, Brush strokeColor, Point center, double radiusX, double radiusY)
-        : base(fillColor, strokeColor)
+    public MyEllipse(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor, points, rotationAngle)
     {
-        Center = center;
-        RadiusX = radiusX;
-        RadiusY = radiusY;
+        Point topLeft = points[0];
+        Point bottomRight = points[1];
+        
+        // Calculate center
+        double centerX = (topLeft.X + bottomRight.X) / 2;
+        double centerY = (topLeft.Y + bottomRight.Y) / 2;
+        Center = new Point(centerX, centerY);
+
+        // Calculate radiusX
+        RadiusX = Math.Abs(bottomRight.X - Center.X);
+
+        // Calculate radiusY
+        RadiusY = Math.Abs(topLeft.Y - Center.Y);
+        CalculateCenter();
+        
     }
-
-
-    public MyEllipse(Point center, double radiusX, double radiusY)
-        : base()
-    {
-        Center = center;
-        RadiusX = radiusX;
-        RadiusY = radiusY;
-    }
-
     
-    public override void Draw(Canvas canvas)
-    {
-        Ellipse ellipse = new Ellipse();
-        ellipse.Fill = FillColor;
-        ellipse.Stroke = StrokeColor;
-        ellipse.Width = 2 * RadiusX;
-        ellipse.Height = 2 * RadiusY;
-        Canvas.SetLeft(ellipse, Center.X - RadiusX);
-        Canvas.SetTop(ellipse, Center.Y - RadiusY);
-        canvas.Children.Add(ellipse);
-    }
+    
 }

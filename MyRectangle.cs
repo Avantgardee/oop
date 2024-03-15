@@ -15,39 +15,30 @@ namespace WpfApp2;
 public class MyRectangle : MyPolygon
 {
     // Конструктор с параметрами цвета заливки и обводки, верхней левой точки, ширины и длины прямоугольника
-    public MyRectangle(Brush fillColor, Brush strokeColor, double rotationAngle,  Point topLeftPoint, double width, double height)
-        : base(fillColor, strokeColor,rotationAngle, new Point[0])
+    public MyRectangle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
+        : base(fillColor, strokeColor,points, rotationAngle)
     {
-        AddRectanglePoints(topLeftPoint, width, height);
-        _rotationAngle = rotationAngle;
-        CalculateCenter();
-    }
-
-    
-    public MyRectangle(Point topLeftPoint, double width, double height)
-        : base(new Point[0])
-    {
-        AddRectanglePoints(topLeftPoint, width, height);
-        _rotationAngle = 0;
+        AddRectanglePoints(points[0], points[1]);
         CalculateCenter();
     }
 
    
-    private void AddRectanglePoints(Point topLeftPoint, double width, double height)
+    protected virtual void AddRectanglePoints(Point topLeftPoint, Point bottomRightPoint)
     {
-        
+        RemoveLastPoint();
+        RemoveLastPoint();
+        // Добавляем верхнюю левую точку
         AddPoint(topLeftPoint);
 
-        
-        Point topRightPoint = new Point(topLeftPoint.X + width, topLeftPoint.Y);
+        // Добавляем верхнюю правую точку
+        Point topRightPoint = new Point(bottomRightPoint.X, topLeftPoint.Y);
         AddPoint(topRightPoint);
 
-   
-        Point bottomRightPoint = new Point(topLeftPoint.X + width, topLeftPoint.Y + height);
+        // Добавляем нижнюю правую точку
         AddPoint(bottomRightPoint);
 
-      
-        Point bottomLeftPoint = new Point(topLeftPoint.X, topLeftPoint.Y + height);
+        // Добавляем нижнюю левую точку
+        Point bottomLeftPoint = new Point(topLeftPoint.X, bottomRightPoint.Y);
         AddPoint(bottomLeftPoint);
     }
     
