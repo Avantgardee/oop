@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace WpfApp2;
 
-[Serializable]
+
 public class MyRectangle : MyPolygon
 {
     // Конструктор с параметрами цвета заливки и обводки, верхней левой точки, ширины и длины прямоугольника

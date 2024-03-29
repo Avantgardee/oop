@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace WpfApp2;
 [Serializable]
-public class MySpriteForBunary
+public class MySpriteForBinary
 {
     public object TagShape { get; set; }
 
@@ -19,17 +19,5 @@ public class MySpriteForBunary
 
     
     public string PenColor { get; set; }
-
-    // //For XML
-    // public string BackgroundColorString
-    // {
-    //     get => BackgroundColor.ToString();
-    //     set => BackgroundColor = (SolidColorBrush)new BrushConverter().ConvertFromString(value); 
-    // }
-    //
-    // public string PenColorString
-    // {
-    //     get => PenColor.ToString();
-    //     set => PenColor = (SolidColorBrush)new BrushConverter().ConvertFromString(value);
-    // }
+    
 }

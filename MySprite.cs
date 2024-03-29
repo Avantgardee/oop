@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 
 namespace WpfApp2;
-[Serializable]
+
 public abstract class MySprite
 {
    

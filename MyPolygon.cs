@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-[Serializable]
+
 public class MyPolygon : MyShape
 {
     public MyPolygon(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)

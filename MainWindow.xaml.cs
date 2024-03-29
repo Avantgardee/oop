@@ -284,7 +284,7 @@ public partial class MainWindow : Window
                 if (!saveFileDialog.FileName.EndsWith(".dat"))
                     saveFileDialog.FileName += ".dat";
                 
-                List<MySpriteForBunary> list = new();
+                List<MySpriteForBinary> list = new();
                 foreach (var item in SpritesList)
                 {
                     list.Add(new()
@@ -320,7 +320,7 @@ public partial class MainWindow : Window
 #pragma warning disable SYSLIB0011
                     BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning restore SYSLIB0011
-                    if (formatter.Deserialize(fs) is List<MySpriteForBunary> { Count: not 0 } loadedShapes)
+                    if (formatter.Deserialize(fs) is List<MySpriteForBinary> { Count: not 0 } loadedShapes)
                     {
                         SpritesList.Clear();
                         Canvas.Children.Clear();

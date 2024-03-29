@@ -9,7 +9,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-[Serializable]
+
 public class MyEllipse : MySprite
 {
     public Point Center { get; set; }

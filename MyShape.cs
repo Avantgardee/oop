@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-[Serializable]
+
 public abstract class MyShape : MySprite
 {
     public MyShape(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)

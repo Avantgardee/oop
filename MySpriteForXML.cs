@@ -19,7 +19,7 @@ public class MySpriteForXML
     [XmlIgnore]
     public Brush PenColor { get; set; }
 
-    //For XML
+  
     public string BackgroundColorString
     {
         get => BackgroundColor.ToString();

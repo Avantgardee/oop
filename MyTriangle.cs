@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-[Serializable]
+
 public class MyTriangle : MyPolygon
 {
     public override object TagShape => "4";
