@@ -46,19 +46,19 @@
          <th> MyRectangle </th>
         <th> </th>
         <th> MyTriangle</th>
-        <th></th>
         <th> </th>
-        <th></th>
+        <th> </th>
+        <th> </th>
            
     </tr>
      <tr>
      <th> </th>
-         <th> MySquare </th>
-        <th> </th>
-        <th> </th>
-        <th></th>
-        <th> </th>
-        <th></th>
+    <th> MySquare </th>
+    <th> </th>
+    <th> </th>
+    <th> </th>
+     <th> </th>
+    <th> </th>
            
     </tr>
 </table>
