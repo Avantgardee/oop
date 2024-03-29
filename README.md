@@ -13,29 +13,52 @@
 <table>
     <tr>
         <th> </th>
+         <th> </th>
         <th> </th>
         <th> </th>
         <th>MySprite</th>
         <th> </th>
         <th> </th>
-         <th> </th>
+        
     </tr>
     <tr>
+     <th> </th>
        <th>  </th>
         <th> </th>
         <th>MyShape </th>
         <th></th>
         <th> </th>
         <th>MyEllipse</th>
-         <th> </th>
+        
     </tr>
     <tr>
+     <th> </th>
          <th>  </th>
         <th> MyPolygon</th>
         <th> </th>
         <th>MyBrokenLine</th>
         <th> </th>
         <th>MyCircle</th>
-           <th>  </th>
+           
+    </tr>
+     <tr>
+     <th> </th>
+         <th> MyRectangle </th>
+        <th> </th>
+        <th> MyTriangle</th>
+        <th></th>
+        <th> </th>
+        <th></th>
+           
+    </tr>
+     <tr>
+     <th> </th>
+         <th> MySquare </th>
+        <th> </th>
+        <th> </th>
+        <th></th>
+        <th> </th>
+        <th></th>
+           
     </tr>
 </table>
