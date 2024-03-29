@@ -12,15 +12,30 @@
 У меня вышла примерно такая иерархия классов: 
 <table>
     <tr>
-        <th>Заголовок 1</th>
-        <th>Заголовок 2</th>
+        <th> </th>
+        <th> </th>
+        <th> </th>
+        <th>MySprite</th>
+        <th> </th>
+        <th> </th>
+         <th> </th>
     </tr>
     <tr>
-        <td>Ячейка 1.1</td>
-        <td>Ячейка 2.1</td>
+       <th>  </th>
+        <th> </th>
+        <th>MyShape </th>
+        <th></th>
+        <th> </th>
+        <th>MyEllipse</th>
+         <th> </th>
     </tr>
     <tr>
-        <td>Ячейка 1.2</td>
-        <td>Ячейка 2.2</td>
+         <th>  </th>
+        <th> MyPolygon</th>
+        <th> </th>
+        <th>MyBrokenLine</th>
+        <th> </th>
+        <th>MyCircle</th>
+           <th>  </th>
     </tr>
 </table>
