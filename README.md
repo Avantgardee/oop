@@ -15,7 +15,7 @@
         <th></th>
         <th></th>
         <th></th>
-        <th</th>
+        <th></th>
         <th>MySprite</th>
         <th></th>
     </tr>
@@ -23,7 +23,7 @@
         <th></th>
         <th></th>
         <th></th>
-        <th/</th>
+        <th>/</th>
         <th></th>
         <th>\</th>
     </tr>
