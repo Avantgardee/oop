@@ -11,14 +11,19 @@ using System.Windows.Shapes;
 
 
 namespace WpfApp2;
-
+[Serializable]
 public abstract class MySprite
 {
-    public double _rotationAngle;
+   
+    public double _rotationAngle { get; set; }
+    [NonSerialized]
     public Point _center;
     public Brush FillColor { get; set; }
     public Brush StrokeColor { get; set; }
-
+    public virtual object TagShape { get; }
+    public double StrokeThickness { get; set; } = 1;
+    [NonSerialized]
+    public int CanvasIndex = -1;
     public Point[] Points { get; set; }
     public MySprite(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
     {

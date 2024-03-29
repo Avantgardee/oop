@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
+[Serializable]
 public class MyPolygon : MyShape
 {
     public MyPolygon(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
@@ -18,7 +19,7 @@ public class MyPolygon : MyShape
         CalculateCenter();
     }
     
-    
+    public override object TagShape => "3";
     protected void AddPoint(Point point)
     {
         List<Point> pointsList = new List<Point>(Points);

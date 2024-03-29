@@ -8,14 +8,17 @@ namespace OOTPiSP.Strategy;
 
 public class BrokenLineDrawStrategy : AbstractDrawStrategy
 {
-    public void Draw(MySprite sprite, Canvas canvas)
+    public Shape Draw(MySprite sprite, Canvas canvas)
     {
         if (sprite is MyBrokenLine myBrokenLine)
         {
             Polyline polyline = new Polyline();
             polyline.Stroke = myBrokenLine.StrokeColor;
             polyline.Points = myBrokenLine.RotatePoints(myBrokenLine.Points, myBrokenLine._rotationAngle);
-            canvas.Children.Add(polyline);
+            polyline.StrokeThickness = myBrokenLine.StrokeThickness;
+            
+            return polyline;
         }
+        return null;
     }
 }

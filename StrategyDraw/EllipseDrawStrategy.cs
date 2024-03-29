@@ -8,21 +8,26 @@ namespace OOTPiSP.Strategy;
 
 public class EllipseDrawStrategy: AbstractDrawStrategy
 {
-    public void Draw(MySprite sprite, Canvas canvas)
+    public Shape Draw(MySprite sprite, Canvas canvas)
     {
         if (sprite is MyEllipse myElllipse)
         {
+            MyEllipse tempShape = new MyEllipse(myElllipse.FillColor, myElllipse.StrokeColor, myElllipse.Points, myElllipse._rotationAngle);
             Ellipse ellipse = new Ellipse();
-            ellipse.Fill = myElllipse.FillColor;
-            ellipse.Stroke = myElllipse.StrokeColor;
-            ellipse.Width = 2 * myElllipse.RadiusX;
-            ellipse.Height = 2 * myElllipse.RadiusY;
+            ellipse.Fill = tempShape.FillColor;
+            ellipse.Stroke = tempShape.StrokeColor;
+            ellipse.Width = 2 * tempShape.RadiusX;
+            ellipse.Height = 2 * tempShape.RadiusY;
             ellipse.RenderTransformOrigin = new Point(0.5, 0.5);
-            RotateTransform rotateTransform = new RotateTransform(myElllipse._rotationAngle);
+            RotateTransform rotateTransform = new RotateTransform(tempShape._rotationAngle);
             ellipse.RenderTransform = rotateTransform;
-            Canvas.SetLeft(ellipse, myElllipse.Center.X - myElllipse.RadiusX);
-            Canvas.SetTop(ellipse, myElllipse.Center.Y - myElllipse.RadiusY);
-            canvas.Children.Add(ellipse);
+            ellipse.StrokeThickness = tempShape.StrokeThickness;
+            Canvas.SetLeft(ellipse, tempShape.Center.X - tempShape.RadiusX);
+            Canvas.SetTop(ellipse, tempShape.Center.Y - tempShape.RadiusY);
+            
+            return ellipse;
         }
+
+        return null;
     }
 }

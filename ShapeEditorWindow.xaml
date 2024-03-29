@@ -1,0 +1,102 @@
+﻿<Window x:Class="WpfApp2.ShapeEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:WpfApp2"
+        xmlns:hw="http://schemas.hpod9.com/haley/wpf"
+        mc:Ignorable="d"
+        Title="Shape Editor" Height="470" Width="400" 
+        Name="EditorWindow" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Width" Value="400"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" Value="#808080 "/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#388E3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        
+    </Window.Resources>
+
+   <Grid Margin="5" 
+      DataContext="{Binding ElementName=EditorWindow, Path=Shape}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+       <TextBlock Text="Редактирование параметров фигуры" FontWeight="Bold" TextAlignment="Center" FontSize="18" FontFamily="Tahoma"/>
+    <StackPanel Grid.Row="1">
+        <TextBlock Text="Цвет заливки" FontWeight="Bold" TextAlignment="Center"/>
+        <hw:ColorPickerButton SelectedBrush="{Binding Path=FillColor}" Content="Выберите цвет для заливки фигуры"/>
+    </StackPanel>
+
+    <StackPanel Grid.Row="2" Margin="0,0,0,20">
+        <TextBlock Text="Цвет обводки" FontWeight="Bold" TextAlignment="Center"/>
+        <hw:ColorPickerButton SelectedBrush="{Binding Path=StrokeColor}" Content="Выберите цвет для обвдодки фигуры"/>
+    </StackPanel>
+
+    <StackPanel Grid.Row="6">
+        <TextBlock Text="Толщина обводки" FontWeight="Bold" TextAlignment="Center"/>
+        <TextBox Text="{Binding Path= StrokeThickness}"/>
+    </StackPanel>
+       <TextBlock Grid.Row="3" Text="Сдвиги относительно исходного положения" FontWeight="Bold" TextAlignment="Center" FontSize="16" Margin="0,0,0,20"/>
+    <Grid Grid.Row="4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Text="Сдвиг вверх" FontWeight="Bold"/>
+        <TextBox Grid.Column="1" Name="Top" Text="0" Width="60" Margin="10,0,0,0"/>
+        <TextBlock Grid.Column="2" Text="Сдвиг вниз" FontWeight="Bold" Margin="10,0,0,0"/>
+        <TextBox Grid.Column="3" Name="Bottom" Text="0" Width="60" Margin="10,0,0,0"/>
+    </Grid>
+
+    <Grid Grid.Row="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Text="Сдвиг вправо" FontWeight="Bold" />
+        <TextBox Grid.Column="1" Name="Right" Text="0" Width="60" />
+        <TextBlock Grid.Column="2" Text="Сдвиг влево" FontWeight="Bold" Margin="10,0,0,0"/>
+        <TextBox Grid.Column="3" Name="Left" Text="0" Width="60"/>
+    </Grid>
+    
+    <StackPanel Grid.Row="7">
+        <TextBlock Text="Угол поворота" FontWeight="Bold" TextAlignment="Center"/>
+        <TextBox Text="{Binding Path=_rotationAngle}"/>
+    </StackPanel>
+
+    <Button Grid.Row="8" Content="Применить" Click="ButtonBase_OnClick" IsDefault="True" Margin="0,20,0,0" Width="200"/>
+</Grid>
+</Window>

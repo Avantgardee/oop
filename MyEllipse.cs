@@ -9,14 +9,14 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-
+[Serializable]
 public class MyEllipse : MySprite
 {
     public Point Center { get; set; }
     public double RadiusX { get; set; }
     public double RadiusY { get; set; }
 
-   
+    public override object TagShape => "0";
     public MyEllipse(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {

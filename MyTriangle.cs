@@ -10,10 +10,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace WpfApp2;
-
+[Serializable]
 public class MyTriangle : MyPolygon
 {
-   
+    public override object TagShape => "4";
     public MyTriangle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor,points,rotationAngle)
     {

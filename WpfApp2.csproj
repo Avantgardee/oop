@@ -12,4 +12,21 @@
       <PackageReference Include="Haley.WPF" Version="5.4.3.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="img\1.png" />
+      <Resource Include="assets\1.png" />
+      <None Remove="img\2.png" />
+      <Resource Include="assets\2.png" />
+      <None Remove="img\3.png" />
+      <Resource Include="assets\3.png" />
+      <None Remove="img\4.png" />
+      <Resource Include="assets\4.png" />
+      <None Remove="img\5.png" />
+      <Resource Include="assets\5.png" />
+      <None Remove="img\6.png" />
+      <Resource Include="assets\6.png" />
+      <None Remove="img\7.png" />
+      <Resource Include="assets\7.png" />
+    </ItemGroup>
+
 </Project>

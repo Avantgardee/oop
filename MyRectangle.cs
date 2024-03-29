@@ -11,18 +11,21 @@ using System.Windows.Shapes;
 
 namespace WpfApp2;
 
-
+[Serializable]
 public class MyRectangle : MyPolygon
 {
     // Конструктор с параметрами цвета заливки и обводки, верхней левой точки, ширины и длины прямоугольника
     public MyRectangle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor,points, rotationAngle)
     {
-        AddRectanglePoints(points[0], points[1]);
+        if (points.Length < 3)
+        {
+            AddRectanglePoints(points[0], points[1]);
+        }
         CalculateCenter();
     }
 
-   
+    public override object TagShape => "5";
     protected virtual void AddRectanglePoints(Point topLeftPoint, Point bottomRightPoint)
     {
         RemoveLastPoint();
