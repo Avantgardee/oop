@@ -16,7 +16,6 @@
         <th></th>
         <th></th>
         <th></th>
-         <th></th>
         <th>MySprite</th>
         <th></th>
     </tr>
@@ -25,7 +24,6 @@
         <th></th>
         <th></th>
         <th>MyShape</th>
-         <th></th>
         <th></th>
         <th>MyEllipse</th>
     </tr>
@@ -34,7 +32,6 @@
         <th></th>
         <th>MyPolygon</th>
         <th>MyBrokenLine</th>
-        <th></th>
          <th></th>
         <th>MyCircle</th>
     </tr>
@@ -43,7 +40,6 @@
         <th>MyRectangle</th>
         <th>MyTriangle</th>
         <th> </th>
-        <th></th>
          <th></th>
         <th></th>
     </tr>
@@ -52,7 +48,6 @@
         <th>MySquare</th>
         <th></th>
         <th></th>
-         <th></th>
         <th></th>
         <th></th>
     </tr>
