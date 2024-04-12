@@ -10,14 +10,14 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using OOTPiSP.Strategy;
+using WpfApp2.StrategyDraw;
 using WpfApp2.FactoryMethods;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using Microsoft.Win32;
-
+using components;
 namespace WpfApp2;
 
 /// <summary>
@@ -25,8 +25,10 @@ namespace WpfApp2;
 /// </summary>
 public partial class MainWindow : Window
 {
-   public ToolType[] ToolArr { get; set; } = new ToolType[7];
+   //public ToolType[] ToolArr { get; set; } = new ToolType[7];
+   private Dictionary<object, ToolType> ToolArr;
     static AbstractFactory Factory { get; set; } = new EllipseFactory();
+    
     static AbstractDrawStrategy DrawStrategy { get; set; } = new EllipseDrawStrategy();
     
     ToolType ToolNow = new ToolType(Factory, DrawStrategy, 2);
@@ -41,7 +43,7 @@ public partial class MainWindow : Window
         if (button != null)
         {
             pointsList.Clear();
-            int buttonIndex = int.Parse(button.Tag.ToString());
+            object buttonIndex = button.Tag;
             ToolNow = ToolArr[buttonIndex];
             rotationAngle = 0;
         }
@@ -49,18 +51,20 @@ public partial class MainWindow : Window
     
     public MainWindow()
     {
-        ToolArr[0] = ToolNow; // ellips
-        ToolArr[1] = new ToolType(new CircleFactory(), new EllipseDrawStrategy(), 2); // circle
-        ToolArr[2] = new ToolType(new BrokenLineFactory(), new BrokenLineDrawStrategy(), -1); // brokenline
-        ToolArr[3] =  new ToolType(new PolygonFactory(), new PolygonDrawStrategy(),  -1); // polygon
-        ToolArr[4] = new ToolType(new TriangleFactory(), new PolygonDrawStrategy(),  3); // triangle
-        ToolArr[5] = new ToolType(new RectangleFactory(), new PolygonDrawStrategy(), 2 ); // rectangle
-        ToolArr[6] = new ToolType(new SquareFactory(), new PolygonDrawStrategy(),  2); // square
-
+        ToolArr = new()
+        {
+            { "0", new ToolType(Factory, DrawStrategy, 2)},// ellips
+            { "1", new ToolType(new CircleFactory(), new EllipseDrawStrategy(), 2)},// circle
+            { "2", new ToolType(new BrokenLineFactory(), new BrokenLineDrawStrategy(), -1) }, // brokenline
+            { "3", new ToolType(new PolygonFactory(), new PolygonDrawStrategy(),  -1) },// polygon
+            { "4", new ToolType(new TriangleFactory(), new PolygonDrawStrategy(),  3) },// triangle
+            {"5", new ToolType(new RectangleFactory(), new PolygonDrawStrategy(), 2 )},// rectangle
+            { "6",  new ToolType(new SquareFactory(), new PolygonDrawStrategy(),  2)}// square
+        };
         InitializeComponent();
     }
         
-    public void DrawAlgorithm(Canvas canvas, MySprite sprite)
+    public void DrawShapeOnCanvas(Canvas canvas, MySprite sprite)
     {
         Shape drawnShape = ToolNow.Strategy.Draw(sprite, canvas);
         if (drawnShape != null)
@@ -78,7 +82,7 @@ public partial class MainWindow : Window
             drawnShape.Tag = sprite.CanvasIndex;
         }
     }
-    void RemoveLastShape()
+    void RmvLstShp()
     {
         int count = Canvas.Children.Count;
         if (count > 0)
@@ -93,7 +97,7 @@ public partial class MainWindow : Window
             rotationAngle = 0;
             if (e.ClickCount == 2)
             {
-                RemoveLastShape();
+                RmvLstShp();
                 return;
             }
             if (e is { ClickCount: 1, OriginalSource: Shape shape })
@@ -126,11 +130,11 @@ public partial class MainWindow : Window
                 var tag = (int) frameworkElement.Tag;
 
                 var shape = SpritesList[tag];
-                ToolNow = ToolArr[int.Parse(shape.TagShape.ToString())];
+                ToolNow = ToolArr[shape.idOfClassShape];
                 var shapeEditorWindow = new ShapeEditorWindow(shape);
                 shapeEditorWindow.ShowDialog();
             
-                DrawAlgorithm(Canvas, shape);
+                DrawShapeOnCanvas(Canvas, shape);
 
                 Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
                 Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
@@ -179,10 +183,10 @@ public partial class MainWindow : Window
                 if (e.LeftButton == MouseButtonState.Pressed )
                 {
                     var mousePosition = e.GetPosition(Canvas);
-                    RemoveLastShape();
+                    RmvLstShp();
                     Point[] pointsArray = pointsList.ToArray();
                     pointsArray[pointsArray.Length - 1] = mousePosition;
-                    DrawShape(FillColorPicker.SelectedBrush, pointsArray);
+                    CreateShapeOnCanvas(FillColorPicker.SelectedBrush, pointsArray);
                 }
             }
         }
@@ -195,7 +199,7 @@ public partial class MainWindow : Window
                         var mousePosition = e.GetPosition(Canvas);
                         if (isMove)
                         {
-                            RemoveLastShape();
+                            RmvLstShp();
                         }
                         else
                         {
@@ -204,7 +208,7 @@ public partial class MainWindow : Window
 
                         Point[] pointsArray = pointsList.ToArray();
                         pointsArray[pointsArray.Length - 1] = mousePosition;
-                        DrawShape(FillColorPicker.SelectedBrush, pointsArray);
+                        CreateShapeOnCanvas(FillColorPicker.SelectedBrush, pointsArray);
                         pointsList[pointsList.Count - 1] = mousePosition;
                     }
                     
@@ -219,7 +223,7 @@ public partial class MainWindow : Window
                                 List<Point> shapePoints = new List<Point>(SpritesList[SpritesList.Count - 1].Points);
                                 Point last = pointsList[pointsList.Count - 2];
                                 if(shapePoints.Contains(last))
-                                    RemoveLastShape();
+                                    RmvLstShp();
                             }
                                   
                         }
@@ -229,7 +233,7 @@ public partial class MainWindow : Window
                         }
                         Point[] pointsArray = pointsList.ToArray();
                         pointsArray[pointsArray.Length - 1] = mousePosition;
-                        DrawShape(FillColorPicker.SelectedBrush, pointsArray);
+                        CreateShapeOnCanvas(FillColorPicker.SelectedBrush, pointsArray);
                         pointsList[pointsList.Count - 1] = mousePosition;
                     }
                 }
@@ -243,12 +247,12 @@ public partial class MainWindow : Window
             
         }
         
-        void DrawShape(Brush bg, Point[] points )
+        void CreateShapeOnCanvas(Brush bg, Point[] points )
         {
             MySprite shape = ToolNow.Factory.CreateShape(bg, PenColorPicker.SelectedBrush,points, rotationAngle);
             
             SpritesList.Add(shape);
-            DrawAlgorithm(Canvas, shape);
+            DrawShapeOnCanvas(Canvas, shape);
             Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
             Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
             Canvas.Children[shape.CanvasIndex].MouseEnter += Shape_MouseEnter;
@@ -294,7 +298,7 @@ public partial class MainWindow : Window
                         Points = item.Points,
                         PenColor = item.StrokeColor.ToString(),
                         StrokeThickness = item.StrokeThickness,
-                        TagShape = item.TagShape,
+                        idOfClassShape = item.idOfClassShape,
                     });
                 }
                 using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
@@ -326,7 +330,7 @@ public partial class MainWindow : Window
                         Canvas.Children.Clear();
                         foreach (var item in loadedShapes)
                         {
-                            var shape = ToolArr[int.Parse(item.TagShape.ToString())].Factory.CreateShape(
+                            var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
                                 (SolidColorBrush)new BrushConverter().ConvertFromString(item.BackgroundColor), 
                                 (SolidColorBrush)new BrushConverter().ConvertFromString(item.PenColor),
                                 item.Points, 
@@ -334,8 +338,8 @@ public partial class MainWindow : Window
                             shape.StrokeThickness = item.StrokeThickness;
                         
                             SpritesList.Add(shape);
-                            ToolNow = ToolArr[int.Parse(item.TagShape.ToString())];
-                            DrawAlgorithm(Canvas, shape);
+                            ToolNow = ToolArr[item.idOfClassShape];
+                            DrawShapeOnCanvas(Canvas, shape);
 
                             Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
                             Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
@@ -378,7 +382,7 @@ public partial class MainWindow : Window
                         Points = item.Points,
                         PenColor = item.StrokeColor,
                         StrokeThickness = item.StrokeThickness,
-                        TagShape = item.TagShape,
+                        idOfClassShape = item.idOfClassShape,
                     });
                 }
             
@@ -405,7 +409,7 @@ public partial class MainWindow : Window
                         Canvas.Children.Clear();
                         foreach (var item in loadedShapes)
                         {
-                            var shape = ToolArr[int.Parse(item.TagShape.ToString())].Factory.CreateShape(
+                            var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
                                 item.BackgroundColor, 
                                 item.PenColor,
                                 item.Points, 
@@ -413,8 +417,8 @@ public partial class MainWindow : Window
                             shape.StrokeThickness = item.StrokeThickness;
                         
                             SpritesList.Add(shape);
-                            ToolNow = ToolArr[int.Parse(item.TagShape.ToString())];
-                            DrawAlgorithm(Canvas, shape);
+                            ToolNow = ToolArr[item.idOfClassShape];
+                            DrawShapeOnCanvas(Canvas, shape);
 
                             Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
                             Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
@@ -432,6 +436,42 @@ public partial class MainWindow : Window
                 }
             }
         }
+        
+        
+        void LoadPlugin(object sender, RoutedEventArgs e)
+        {
+            
+                PluginLoader pluginLoader = new();
+                var factoryList = pluginLoader.LoadPlugin();
+                foreach (var factory in factoryList)
+                {
+                    Point[] temp =  { new Point(0, 0), new Point(0, 0)};
+                    var shape = factory.CreateShape(Brushes.Black,Brushes.Black ,temp, 0);
+                    if (!ToolArr.ContainsKey(shape.idOfClassShape))
+                    {
+                        ToolArr.Add(shape.idOfClassShape, new ToolType(factory,shape.DrawStrategy,2));
+                    }
+
+
+                    Button newButton = new Button
+                    {
+                        Content = shape.ToString(),
+                        Tag = shape.idOfClassShape,
+                    };
+                    newButton.Click += ToolBtnClick;
+                    
+                    int rowIndex = ButtonGrid.RowDefinitions.Count;
+                    ButtonGrid.RowDefinitions.Add(
+                        new()
+                        {
+                            Height = new GridLength(1, GridUnitType.Star),
+                        });
+                    Grid.SetRow(newButton, rowIndex);
+                    ButtonGrid.Children.Add(newButton);
+                    ToolNow = ToolArr[shape.idOfClassShape];
+                }
+        }
+        
         void Canvas_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left && !isMove)
@@ -444,7 +484,7 @@ public partial class MainWindow : Window
                         Point[] pointsArray = pointsList.ToArray();
                         pointsArray[pointsArray.Length - 1] = mousePosition;
                         pointsList[pointsList.Count - 1] = mousePosition;
-                        DrawShape(FillColorPicker.SelectedBrush, pointsArray);
+                        CreateShapeOnCanvas(FillColorPicker.SelectedBrush, pointsArray);
                         pointsList.Clear(); 
                         rotationAngle = 0;
                     }
@@ -459,7 +499,7 @@ public partial class MainWindow : Window
                         Point[] pointsArray = pointsList.ToArray();
                         pointsArray[pointsArray.Length - 1] = mousePosition;
                         pointsList[pointsList.Count - 1] = mousePosition;
-                        DrawShape(FillColorPicker.SelectedBrush, pointsArray);
+                        CreateShapeOnCanvas(FillColorPicker.SelectedBrush, pointsArray);
                         rotationAngle = 0;
                     }
    

@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using components;
+using WpfApp2.StrategyDraw;
 
 namespace WpfApp2;
 
@@ -16,7 +18,7 @@ public class MyEllipse : MySprite
     public double RadiusX { get; set; }
     public double RadiusY { get; set; }
 
-    public override object TagShape => "0";
+    public override object idOfClassShape => "0";
     public MyEllipse(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
@@ -34,7 +36,7 @@ public class MyEllipse : MySprite
         // Calculate radiusY
         RadiusY = Math.Abs(topLeft.Y - Center.Y);
         CalculateCenter();
-        
+        DrawStrategy = new EllipseDrawStrategy();
     }
     
     

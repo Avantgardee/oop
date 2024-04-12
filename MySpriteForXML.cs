@@ -1,11 +1,12 @@
 using System.Windows.Media;
 using System.Xml.Serialization;
 using System.Windows;
+using components;
 namespace WpfApp2;
 
 public class MySpriteForXML
 {
-    public object TagShape { get; set; }
+    public object idOfClassShape { get; set; }
 
     public double Angle { get; set; }
 

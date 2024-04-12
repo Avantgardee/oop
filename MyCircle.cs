@@ -8,12 +8,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using components;
 namespace WpfApp2;
 
 public class MyCircle : MyEllipse
 {
-    public override object TagShape => "1";
+    public override object idOfClassShape => "1";
     public MyCircle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {

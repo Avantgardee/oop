@@ -1,5 +1,5 @@
 using System.Windows.Media;
-namespace WpfApp2.FactoryMethods;
+namespace components;
 using System.Windows;
 
 public abstract class AbstractFactory

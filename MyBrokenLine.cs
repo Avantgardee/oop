@@ -8,12 +8,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using components;
+using WpfApp2.StrategyDraw;
 
 namespace WpfApp2;
 
 public class MyBrokenLine : MyShape
 {
-    public override object TagShape => "2";
+    public override object idOfClassShape => "2";
     public MyBrokenLine(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
@@ -21,6 +23,7 @@ public class MyBrokenLine : MyShape
         if (points.Length < 2)
             throw new ArgumentException("Broken line must have at least two points.", nameof(points));
         CalculateCenter();
+        DrawStrategy = new BrokenLineDrawStrategy();
     }
 
     

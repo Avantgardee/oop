@@ -10,7 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 
-namespace WpfApp2;
+namespace components;
 
 public abstract class MySprite
 {
@@ -20,7 +20,8 @@ public abstract class MySprite
     public Point _center;
     public Brush FillColor { get; set; }
     public Brush StrokeColor { get; set; }
-    public virtual object TagShape { get; }
+    public AbstractDrawStrategy DrawStrategy { get; protected set; }
+    public virtual object idOfClassShape { get; }
     public double StrokeThickness { get; set; } = 1;
     [NonSerialized]
     public int CanvasIndex = -1;

@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using components;
 namespace WpfApp2;
 
 
@@ -25,7 +25,7 @@ public class MyRectangle : MyPolygon
         CalculateCenter();
     }
 
-    public override object TagShape => "5";
+    public override object idOfClassShape => "5";
     protected virtual void AddRectanglePoints(Point topLeftPoint, Point bottomRightPoint)
     {
         RemoveLastPoint();

@@ -14,13 +14,13 @@
         <DockPanel DockPanel.Dock="Top" Height="40" ZIndex="1">
             <Menu DockPanel.Dock="Top" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="40">
                 <MenuItem Header="Сериализация/Десериализация" Margin="10">
-                        <MenuItem Header="Сериализовать в Bin" Click="BinarySave_OnClick"/>
-                        <MenuItem Header="Сериализовать в XML"  Click="XMLSave_OnClick"/>
-                        <MenuItem Header="Десериализовать из Bin" Click="OpenBinary_Click"/>
-                        <MenuItem Header="Десериализовать из XML" Click="XMLOpen_OnClick"/>
+                    <MenuItem Header="Сериализовать в Bin" Click="BinarySave_OnClick" />
+                    <MenuItem Header="Сериализовать в XML" Click="XMLSave_OnClick" />
+                    <MenuItem Header="Десериализовать из Bin" Click="OpenBinary_Click" />
+                    <MenuItem Header="Десериализовать из XML" Click="XMLOpen_OnClick" />
 
                 </MenuItem>
-
+                <MenuItem Header="Загрузить плагин" Margin="10" Click="LoadPlugin"/>
             </Menu>
         </DockPanel>
         <Grid>
@@ -38,37 +38,58 @@
                     PreviewMouseDown="Canvas_PreviewMouseDown" />
 
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Visible">
-                <StackPanel>
-                    <DockPanel >
-                        <TextBlock Text="Заливка" DockPanel.Dock="Top" TextAlignment="Center"  FontSize="16"/>
-                        <hw:ColorPickerButton Name="FillColorPicker" Content="Заливка" SelectedBrush="Black" Height="60"
-                                              Width="60" DockPanel.Dock="Bottom"/>
+                <Grid x:Name="ButtonGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Заливка -->
+                    <DockPanel Grid.Row="0">
+                        <TextBlock Text="Заливка" DockPanel.Dock="Top" TextAlignment="Center" FontSize="16" />
+                        <hw:ColorPickerButton Name="FillColorPicker" Content="Заливка" SelectedBrush="Black"
+                                              Height="60"
+                                              Width="60" DockPanel.Dock="Bottom" />
                     </DockPanel>
-                    <TextBlock Text="Обводка" DockPanel.Dock="bottom" TextAlignment="Center"  FontSize="16"/>
-                    <hw:ColorPickerButton Name="PenColorPicker" Content="обводка" SelectedBrush="Black" Height="60"
-                                          Width="60" DockPanel.Dock="Bottom"/>
-                    <Button Background="Transparent" Height="60" Width="60" Tag="0" Click="ToolBtnClick">
-                        <Image Source="./assets/5.png" Width="60" Height="60" />
+                    
+                    <!-- Обводка -->
+                    <DockPanel Grid.Row="1">
+                    <TextBlock Text="Обводка" TextAlignment="Center" FontSize="16" DockPanel.Dock="Top" />
+                    <hw:ColorPickerButton Name="PenColorPicker" Content="Обводка" SelectedBrush="Black"
+                                          Height="60"
+                                          Width="60" />
+                    </DockPanel>
+                    
+                    <!-- Кнопки инструментов -->
+                    <Button Grid.Row="2" Background="Transparent" Height="60" Width="60" Tag="0" Click="ToolBtnClick">
+                        <Image Source="./assets/el.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="1" Click="ToolBtnClick">
-                        <Image Source="./assets/4.png" Width="60" Height="60" />
+                    <Button Grid.Row="3" Background="White" Height="60" Width="60" Tag="1" Click="ToolBtnClick">
+                        <Image Source="./assets/sirq.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="2" Click="ToolBtnClick">
-                        <Image Source="./assets/3.png" Width="60" Height="60" />
+                    <Button Grid.Row="4" Background="White" Height="60" Width="60" Tag="2" Click="ToolBtnClick">
+                        <Image Source="./assets/line.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="3" Click="ToolBtnClick">
-                        <Image Source="./assets/6.png" Width="60" Height="60" />
+                    <Button Grid.Row="5" Background="White" Height="60" Width="60" Tag="3" Click="ToolBtnClick">
+                        <Image Source="./assets/pol.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="4" Click="ToolBtnClick">
-                        <Image Source="./assets/7.png" Width="60" Height="60" />
+                    <Button Grid.Row="6" Background="White" Height="60" Width="60" Tag="4" Click="ToolBtnClick">
+                        <Image Source="./assets/tri.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="5" Click="ToolBtnClick">
-                        <Image Source="./assets/2.png" Width="60" Height="60" />
+                    <Button Grid.Row="7" Background="White" Height="60" Width="60" Tag="5" Click="ToolBtnClick">
+                        <Image Source="./assets/req.png" Width="60" Height="60" />
                     </Button>
-                    <Button Background="White" Height="60" Width="60" Tag="6" Click="ToolBtnClick">
-                        <Image Source="./assets/1.png" Width="60" Height="60" />
+                    <Button Grid.Row="8" Background="White" Height="60" Width="60" Tag="6" Click="ToolBtnClick">
+                        <Image Source="./assets/sq.png" Width="60" Height="60" />
                     </Button>
-                </StackPanel>
+                </Grid>
             </ScrollViewer>
         </Grid>
     </DockPanel>

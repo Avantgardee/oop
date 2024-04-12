@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using components;
+using WpfApp2.StrategyDraw;
 
 namespace WpfApp2;
 
@@ -17,9 +19,10 @@ public class MyPolygon : MyShape
         : base(fillColor, strokeColor, points, rotationAngle)
     {
         CalculateCenter();
+        DrawStrategy = new PolygonDrawStrategy();
     }
     
-    public override object TagShape => "3";
+    public override object idOfClassShape => "3";
     protected void AddPoint(Point point)
     {
         List<Point> pointsList = new List<Point>(Points);

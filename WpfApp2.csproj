@@ -14,19 +14,52 @@
 
     <ItemGroup>
       <None Remove="img\1.png" />
-      <Resource Include="assets\1.png" />
+      <Resource Include="assets\sq.png" />
       <None Remove="img\2.png" />
-      <Resource Include="assets\2.png" />
+      <Resource Include="assets\req.png" />
       <None Remove="img\3.png" />
-      <Resource Include="assets\3.png" />
+      <Resource Include="assets\line.png" />
       <None Remove="img\4.png" />
-      <Resource Include="assets\4.png" />
+      <Resource Include="assets\sirq.png" />
       <None Remove="img\5.png" />
-      <Resource Include="assets\5.png" />
+      <Resource Include="assets\el.png" />
       <None Remove="img\6.png" />
-      <Resource Include="assets\6.png" />
+      <Resource Include="assets\pol.png" />
       <None Remove="img\7.png" />
-      <Resource Include="assets\7.png" />
+      <Resource Include="assets\tri.png" />
+      <None Remove="components\bin\**" />
+      <None Remove="components\obj\**" />
+      <None Remove="components\**" />
+      <None Remove="Star\obj\**" />
+      <None Remove="Star\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="components\bin\**" />
+      <Compile Remove="components\obj\**" />
+      <Compile Remove="components\**" />
+      <Compile Remove="Star\obj\**" />
+      <Compile Remove="Star\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="components\bin\**" />
+      <EmbeddedResource Remove="components\obj\**" />
+      <EmbeddedResource Remove="components\**" />
+      <EmbeddedResource Remove="Star\obj\**" />
+      <EmbeddedResource Remove="Star\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="components\bin\**" />
+      <Page Remove="components\obj\**" />
+      <Page Remove="components\**" />
+      <Page Remove="Star\obj\**" />
+      <Page Remove="Star\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="components\components.csproj" />
     </ItemGroup>
 
 </Project>

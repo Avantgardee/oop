@@ -1,12 +1,12 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
-
+using components;
 namespace WpfApp2;
 [Serializable]
 public class MySpriteForBinary
 {
-    public object TagShape { get; set; }
+    public object idOfClassShape { get; set; }
 
     public double Angle { get; set; }
 

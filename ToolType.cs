@@ -1,6 +1,6 @@
-using OOTPiSP.Strategy;
+using WpfApp2.StrategyDraw;
 using WpfApp2.FactoryMethods;
-
+using components;
 namespace WpfApp2;
 
 public class ToolType

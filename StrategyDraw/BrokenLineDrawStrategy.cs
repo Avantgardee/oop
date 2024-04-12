@@ -3,8 +3,8 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Shapes;
 using WpfApp2;
-
-namespace OOTPiSP.Strategy;
+using components;
+namespace WpfApp2.StrategyDraw;
 
 public class BrokenLineDrawStrategy : AbstractDrawStrategy
 {

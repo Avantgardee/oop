@@ -1,6 +1,7 @@
 
 using System.Windows.Media;
 using System.Windows;
+using components;
 namespace WpfApp2.FactoryMethods;
 
 public class TriangleFactory: AbstractFactory

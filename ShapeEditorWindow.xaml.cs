@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfApp2;
-
+using components;
 namespace WpfApp2;
 public partial class ShapeEditorWindow
 {

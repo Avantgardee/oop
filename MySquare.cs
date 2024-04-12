@@ -8,12 +8,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using components;
 namespace WpfApp2;
 
 public class MySquare : MyRectangle
 {
-    public override object TagShape => "6";
+    public override object idOfClassShape => "6";
     public MySquare( Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
