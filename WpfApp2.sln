@@ -6,8 +6,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "components", "components\co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Star", "Star\Star.csproj", "{C3428F62-0A07-4D78-97A6-77D78F3BD1FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptPlugin", "EncryptPlugin\EncryptPlugin.csproj", "{FDA78BB3-E3F4-4125-9679-B293FE7D845A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +24,5 @@ Global
 		{C3428F62-0A07-4D78-97A6-77D78F3BD1FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3428F62-0A07-4D78-97A6-77D78F3BD1FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3428F62-0A07-4D78-97A6-77D78F3BD1FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FDA78BB3-E3F4-4125-9679-B293FE7D845A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FDA78BB3-E3F4-4125-9679-B293FE7D845A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FDA78BB3-E3F4-4125-9679-B293FE7D845A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FDA78BB3-E3F4-4125-9679-B293FE7D845A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

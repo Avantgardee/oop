@@ -37,6 +37,11 @@
       <None Remove="Bear\bin\**" />
       <None Remove="EncryptPlugin\obj\**" />
       <None Remove="EncryptPlugin\**" />
+<<<<<<< HEAD
+=======
+      <None Remove="AdapterPlugin\obj\**" />
+      <None Remove="AdapterPlugin\**" />
+>>>>>>> ae5977e (lab 6 - File encryption plugin (in-stream) connected using the "adapter" design pattern)
     </ItemGroup>
 
     <ItemGroup>
@@ -50,6 +55,11 @@
       <Compile Remove="Bear\bin\**" />
       <Compile Remove="EncryptPlugin\obj\**" />
       <Compile Remove="EncryptPlugin\**" />
+<<<<<<< HEAD
+=======
+      <Compile Remove="AdapterPlugin\obj\**" />
+      <Compile Remove="AdapterPlugin\**" />
+>>>>>>> ae5977e (lab 6 - File encryption plugin (in-stream) connected using the "adapter" design pattern)
     </ItemGroup>
 
     <ItemGroup>
@@ -63,6 +73,11 @@
       <EmbeddedResource Remove="Bear\bin\**" />
       <EmbeddedResource Remove="EncryptPlugin\obj\**" />
       <EmbeddedResource Remove="EncryptPlugin\**" />
+<<<<<<< HEAD
+=======
+      <EmbeddedResource Remove="AdapterPlugin\obj\**" />
+      <EmbeddedResource Remove="AdapterPlugin\**" />
+>>>>>>> ae5977e (lab 6 - File encryption plugin (in-stream) connected using the "adapter" design pattern)
     </ItemGroup>
 
     <ItemGroup>
@@ -76,6 +91,11 @@
       <Page Remove="Bear\bin\**" />
       <Page Remove="EncryptPlugin\obj\**" />
       <Page Remove="EncryptPlugin\**" />
+<<<<<<< HEAD
+=======
+      <Page Remove="AdapterPlugin\obj\**" />
+      <Page Remove="AdapterPlugin\**" />
+>>>>>>> ae5977e (lab 6 - File encryption plugin (in-stream) connected using the "adapter" design pattern)
     </ItemGroup>
 
     <ItemGroup>

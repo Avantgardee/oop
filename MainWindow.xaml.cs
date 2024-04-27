@@ -311,7 +311,7 @@ public partial class MainWindow : Window
             }
         }
 
-        void BinarySave_OnClick(object sender, RoutedEventArgs e)
+          void BinarySave_OnClick(object sender, RoutedEventArgs e)
         {
             MenuItem clickedMenuItem = sender as MenuItem;
             string menuItemTag = clickedMenuItem.Tag?.ToString();
@@ -331,15 +331,30 @@ public partial class MainWindow : Window
                     {
                         if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                         {
-                            list = kvp.Value.Item2.EncryptData(SpritesList);
+                            list = kvp.Value.Item2.PreprocessorEncryptData(SpritesList);
                             break; // Выходим из цикла, если плагин найден
                         }
                     }
-                    using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                    foreach (var kvp in CurrentFunctionalPlugins)
+                    {
+                        if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                        {
+                            using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
 #pragma warning disable SYSLIB0011
-                    BinaryFormatter formatter = new BinaryFormatter();
+                            BinaryFormatter serializer = new BinaryFormatter();
 #pragma warning restore SYSLIB0011
-                    formatter.Serialize(fs, list);
+                            using (MemoryStream stream = new())
+                            {
+                                serializer.Serialize(stream, list);
+                                stream.Seek(0, SeekOrigin.Begin);
+                                Stream streamSave = stream; 
+                                streamSave = kvp.Value.Item2.PostprocessorEncryptData(streamSave);
+                                streamSave.CopyTo(fs);
+                                streamSave.Close();
+                            }
+                        }
+                    }
+                    
                 }
                 else
                 {
@@ -383,20 +398,28 @@ public partial class MainWindow : Window
                     List<MySpriteForEncrypt> encryptedList = new List<MySpriteForEncrypt>();
                     if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                     {
+#pragma warning disable SYSLIB0011
+                        BinaryFormatter serializer = new BinaryFormatter();
+#pragma warning restore SYSLIB0011
+                        using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open);
+                        fs.Seek(0, SeekOrigin.Begin);
+                        Stream streamLoad = fs;
                         foreach (var kvp in CurrentFunctionalPlugins)
                         {
                             if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                             {
-                                using (FileStream fsPlugin = new FileStream(openFileDialog.FileName, FileMode.Open))
-                                {
-                                    
-#pragma warning disable SYSLIB0011
-                                    BinaryFormatter formatterPlugin = new BinaryFormatter();
-#pragma warning restore SYSLIB0011
-                                    encryptedList = (List<MySpriteForEncrypt>)formatterPlugin.Deserialize(fsPlugin);
-                                }
+                                streamLoad = kvp.Value.Item2.PostprocessorDecryptData(streamLoad);
                             }
                         }
+                        
+                        foreach (var kvp in CurrentFunctionalPlugins)
+                        {
+                            if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                            {
+                                encryptedList = (List<MySpriteForEncrypt>)serializer.Deserialize(streamLoad);
+                            }
+                        }
+                        
                     }
                     
                     if (encryptedList.Count > 0)
@@ -409,7 +432,7 @@ public partial class MainWindow : Window
                             {
                                 if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                                 {
-                                    decryptedSprites = kvp.Value.Item2.DecryptData(encryptedList, ToolArr);
+                                    decryptedSprites = kvp.Value.Item2.PreprocessorDecryptData(encryptedList, ToolArr);
                                 }
                             }
                         }
@@ -496,13 +519,26 @@ public partial class MainWindow : Window
                     {
                         if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                         {
-                            list = kvp.Value.Item2.EncryptData(SpritesList);
+                            list = kvp.Value.Item2.PreprocessorEncryptData(SpritesList);
                             break; // Выходим из цикла, если плагин найден
                         }
                     }
-                    
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
-                    serializer.Serialize(fs, list);
+                    foreach (var kvp in CurrentFunctionalPlugins)
+                    {
+                        if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                        {
+                            XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
+                            using (MemoryStream stream = new())
+                            {
+                                serializer.Serialize(stream, list);
+                                stream.Seek(0, SeekOrigin.Begin);
+                                Stream streamSave = stream; 
+                                streamSave = kvp.Value.Item2.PostprocessorEncryptData(streamSave);
+                                streamSave.CopyTo(fs);
+                                streamSave.Close();
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -543,17 +579,26 @@ public partial class MainWindow : Window
                     List<MySpriteForEncrypt> encryptedList = new List<MySpriteForEncrypt>();
                     if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                     {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
+                        using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open);
+                        fs.Seek(0, SeekOrigin.Begin);
+                        Stream streamLoad = fs;
                         foreach (var kvp in CurrentFunctionalPlugins)
                         {
                             if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                             {
-                                using (FileStream fsPlugin = new FileStream(openFileDialog.FileName, FileMode.Open))
-                                {
-                                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
-                                    encryptedList = (List<MySpriteForEncrypt>)serializer.Deserialize(fsPlugin);
-                                }
+                                streamLoad = kvp.Value.Item2.PostprocessorDecryptData(streamLoad);
                             }
                         }
+                        
+                        foreach (var kvp in CurrentFunctionalPlugins)
+                        {
+                            if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                            {
+                                encryptedList = (List<MySpriteForEncrypt>)serializer.Deserialize(streamLoad);
+                            }
+                        }
+                        
                     }
                     if (encryptedList.Count > 0)
                     {
@@ -565,7 +610,7 @@ public partial class MainWindow : Window
                             {
                                 if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
                                 {
-                                    decryptedSprites = kvp.Value.Item2.DecryptData(encryptedList, ToolArr);
+                                    decryptedSprites = kvp.Value.Item2.PreprocessorDecryptData(encryptedList, ToolArr);
                                 }
                             }
                         }
