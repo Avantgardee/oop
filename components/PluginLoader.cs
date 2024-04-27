@@ -30,4 +30,28 @@ public class PluginLoader
 
         return list;
     }
+    public List<IPluginFunctionality> LoadPluginFunctionality()
+    {
+        List<IPluginFunctionality> list = [];
+        OpenFileDialog openFileDialog = new()
+        {
+            Filter = "Динамическая библиотека (*.dll)|*.dll"
+        };
+        if (openFileDialog.ShowDialog() == true)
+        {
+            var context = new AssemblyLoadContext("DynamicLoad", true);
+            Assembly assembly = context.LoadFromAssemblyPath(openFileDialog.FileName);
+            var types = assembly.GetTypes().Where(type => typeof(IPluginFunctionality).IsAssignableFrom(type));
+            foreach (var type in types)
+            {
+                if (Activator.CreateInstance(type) is IPluginFunctionality pluginFunctionality)
+                {
+                    list.Add(pluginFunctionality);
+                }
+            }
+            context.Unload();
+        }
+
+        return list;
+    }
 }

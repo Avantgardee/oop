@@ -24,7 +24,7 @@ public class MyRectangle : MyPolygon
         }
         CalculateCenter();
     }
-
+    public override int countOfPoints => -1;
     public override object idOfClassShape => "5";
     protected virtual void AddRectanglePoints(Point topLeftPoint, Point bottomRightPoint)
     {
@@ -44,6 +44,7 @@ public class MyRectangle : MyPolygon
         Point bottomLeftPoint = new Point(topLeftPoint.X, bottomRightPoint.Y);
         AddPoint(bottomLeftPoint);
     }
-    
+    public override string ToString() =>
+        $"Прямоугольник";
    
 }

@@ -21,7 +21,8 @@ public abstract class MySprite
     public Brush FillColor { get; set; }
     public Brush StrokeColor { get; set; }
     public AbstractDrawStrategy DrawStrategy { get; protected set; }
-    public virtual object idOfClassShape { get; }
+    public virtual object idOfClassShape { get;set; }
+    public virtual int countOfPoints { get; }
     public double StrokeThickness { get; set; } = 1;
     [NonSerialized]
     public int CanvasIndex = -1;
@@ -65,5 +66,5 @@ public abstract class MySprite
         _center = new Point(totalX / Points.Length, totalY / Points.Length);
     }
     
-   
+    
 }

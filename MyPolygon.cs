@@ -21,15 +21,15 @@ public class MyPolygon : MyShape
         CalculateCenter();
         DrawStrategy = new PolygonDrawStrategy();
     }
-    
+    public override int countOfPoints => -1;
     public override object idOfClassShape => "3";
+    
     protected void AddPoint(Point point)
     {
         List<Point> pointsList = new List<Point>(Points);
         pointsList.Add(point);
         Points = pointsList.ToArray();
     }
-
     
     protected void RemoveLastPoint()
     {
@@ -40,4 +40,6 @@ public class MyPolygon : MyShape
             Points = pointsList.ToArray();
         }
     }
+    public override string ToString() =>
+        $"Полигон";
 }

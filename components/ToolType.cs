@@ -1,7 +1,5 @@
-using WpfApp2.StrategyDraw;
-using WpfApp2.FactoryMethods;
-using components;
-namespace WpfApp2;
+
+namespace components;
 
 public class ToolType
 {

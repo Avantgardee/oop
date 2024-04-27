@@ -16,6 +16,7 @@ namespace WpfApp2;
 public class MyBrokenLine : MyShape
 {
     public override object idOfClassShape => "2";
+    public override int countOfPoints => -1;
     public MyBrokenLine(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
@@ -25,6 +26,7 @@ public class MyBrokenLine : MyShape
         CalculateCenter();
         DrawStrategy = new BrokenLineDrawStrategy();
     }
-
+    public override string ToString() =>
+        $"Ломанная";
     
 }

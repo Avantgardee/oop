@@ -32,6 +32,11 @@
       <None Remove="components\**" />
       <None Remove="Star\obj\**" />
       <None Remove="Star\**" />
+      <None Remove="Bear\obj\**" />
+      <None Remove="Bear\**" />
+      <None Remove="Bear\bin\**" />
+      <None Remove="EncryptPlugin\obj\**" />
+      <None Remove="EncryptPlugin\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,6 +45,11 @@
       <Compile Remove="components\**" />
       <Compile Remove="Star\obj\**" />
       <Compile Remove="Star\**" />
+      <Compile Remove="Bear\obj\**" />
+      <Compile Remove="Bear\**" />
+      <Compile Remove="Bear\bin\**" />
+      <Compile Remove="EncryptPlugin\obj\**" />
+      <Compile Remove="EncryptPlugin\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -48,6 +58,11 @@
       <EmbeddedResource Remove="components\**" />
       <EmbeddedResource Remove="Star\obj\**" />
       <EmbeddedResource Remove="Star\**" />
+      <EmbeddedResource Remove="Bear\obj\**" />
+      <EmbeddedResource Remove="Bear\**" />
+      <EmbeddedResource Remove="Bear\bin\**" />
+      <EmbeddedResource Remove="EncryptPlugin\obj\**" />
+      <EmbeddedResource Remove="EncryptPlugin\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -56,6 +71,11 @@
       <Page Remove="components\**" />
       <Page Remove="Star\obj\**" />
       <Page Remove="Star\**" />
+      <Page Remove="Bear\obj\**" />
+      <Page Remove="Bear\**" />
+      <Page Remove="Bear\bin\**" />
+      <Page Remove="EncryptPlugin\obj\**" />
+      <Page Remove="EncryptPlugin\**" />
     </ItemGroup>
 
     <ItemGroup>

@@ -14,6 +14,8 @@ using WpfApp2.StrategyDraw;
 using WpfApp2.FactoryMethods;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Runtime.Loader;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using Microsoft.Win32;
@@ -26,7 +28,7 @@ namespace WpfApp2;
 public partial class MainWindow : Window
 {
    //public ToolType[] ToolArr { get; set; } = new ToolType[7];
-   private Dictionary<object, ToolType> ToolArr;
+   private Dictionary<object, ToolType> ToolArr = new Dictionary<object, ToolType>();
     static AbstractFactory Factory { get; set; } = new EllipseFactory();
     
     static AbstractDrawStrategy DrawStrategy { get; set; } = new EllipseDrawStrategy();
@@ -37,6 +39,7 @@ public partial class MainWindow : Window
     double rotationAngle = 0;
     bool isMove;
     List<MySprite> SpritesList { get; set; } = [];
+    Dictionary<string, Tuple<bool, IPluginFunctionality>> CurrentFunctionalPlugins = new Dictionary<string, Tuple<bool, IPluginFunctionality>>();
     private void ToolBtnClick(object sender, RoutedEventArgs e)
     {
         Button button = sender as Button;
@@ -51,17 +54,48 @@ public partial class MainWindow : Window
     
     public MainWindow()
     {
-        ToolArr = new()
-        {
-            { "0", new ToolType(Factory, DrawStrategy, 2)},// ellips
-            { "1", new ToolType(new CircleFactory(), new EllipseDrawStrategy(), 2)},// circle
-            { "2", new ToolType(new BrokenLineFactory(), new BrokenLineDrawStrategy(), -1) }, // brokenline
-            { "3", new ToolType(new PolygonFactory(), new PolygonDrawStrategy(),  -1) },// polygon
-            { "4", new ToolType(new TriangleFactory(), new PolygonDrawStrategy(),  3) },// triangle
-            {"5", new ToolType(new RectangleFactory(), new PolygonDrawStrategy(), 2 )},// rectangle
-            { "6",  new ToolType(new SquareFactory(), new PolygonDrawStrategy(),  2)}// square
-        };
+        
         InitializeComponent();
+        List<AbstractFactory> list = [];
+        var context = new AssemblyLoadContext("DynamicLoad", true);
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        var types = assembly.GetTypes().Where(type => type.IsSubclassOf(typeof(AbstractFactory)));
+        foreach (var type in types)
+        {
+            if (Activator.CreateInstance(type) is AbstractFactory factory)
+            {
+                list.Add(factory);
+            }
+        }
+        context.Unload();
+        foreach (var factory in list)
+        {
+            Point[] temp =  { new Point(0, 0), new Point(0, 0)};
+            var shape = factory.CreateShape(Brushes.Black,Brushes.Black ,temp, 0);
+            if (!ToolArr.ContainsKey(shape.idOfClassShape))
+            {
+                ToolArr.Add(shape.idOfClassShape, new ToolType(factory,shape.DrawStrategy,shape.countOfPoints));
+            }
+
+
+            Button newButton = new Button
+            {
+                Content = shape.ToString(),
+                Tag = shape.idOfClassShape,
+            };
+            newButton.Click += ToolBtnClick;
+                    
+            int rowIndex = ButtonGrid.RowDefinitions.Count;
+            ButtonGrid.RowDefinitions.Add(
+                new()
+                {
+                    Height = new GridLength(1, GridUnitType.Star),
+                });
+            Grid.SetRow(newButton, rowIndex);
+            ButtonGrid.Children.Add(newButton);
+            ToolNow = ToolArr[shape.idOfClassShape];
+        }
+        
     }
         
     public void DrawShapeOnCanvas(Canvas canvas, MySprite sprite)
@@ -279,6 +313,8 @@ public partial class MainWindow : Window
 
         void BinarySave_OnClick(object sender, RoutedEventArgs e)
         {
+            MenuItem clickedMenuItem = sender as MenuItem;
+            string menuItemTag = clickedMenuItem.Tag?.ToString();
             SaveFileDialog saveFileDialog = new()
             {
                 Filter = "Бинарные файлы (*.dat)|*.dat|Все файлы (*.*)|*.*"
@@ -288,66 +324,145 @@ public partial class MainWindow : Window
                 if (!saveFileDialog.FileName.EndsWith(".dat"))
                     saveFileDialog.FileName += ".dat";
                 
-                List<MySpriteForBinary> list = new();
-                foreach (var item in SpritesList)
+                if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                 {
-                    list.Add(new()
+                    List<MySpriteForEncrypt> list = new();
+                    foreach (var kvp in CurrentFunctionalPlugins)
                     {
-                        Angle = item._rotationAngle,
-                        BackgroundColor = item.FillColor.ToString(),
-                        Points = item.Points,
-                        PenColor = item.StrokeColor.ToString(),
-                        StrokeThickness = item.StrokeThickness,
-                        idOfClassShape = item.idOfClassShape,
-                    });
-                }
-                using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+                        if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                        {
+                            list = kvp.Value.Item2.EncryptData(SpritesList);
+                            break; // Выходим из цикла, если плагин найден
+                        }
+                    }
+                    using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
 #pragma warning disable SYSLIB0011
-                BinaryFormatter formatter = new BinaryFormatter();
+                    BinaryFormatter formatter = new BinaryFormatter();
 #pragma warning restore SYSLIB0011
-                formatter.Serialize(fs, list);
+                    formatter.Serialize(fs, list);
+                }
+                else
+                {
+                    List<MySpriteForBinary> list = new();
+                    foreach (var item in SpritesList)
+                    {
+                        list.Add(new()
+                        {
+                            Angle = item._rotationAngle,
+                            BackgroundColor = item.FillColor.ToString(),
+                            Points = item.Points,
+                            PenColor = item.StrokeColor.ToString(),
+                            StrokeThickness = item.StrokeThickness,
+                            idOfClassShape = item.idOfClassShape,
+                            countOfPoints = item.countOfPoints
+                        });
+                    }
+                    using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
+#pragma warning disable SYSLIB0011
+                    BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning restore SYSLIB0011
+                    formatter.Serialize(fs, list);
+                }
+                
+                
             }
         }
         
         private void OpenBinary_Click(object sender, RoutedEventArgs e)
         {
+            MenuItem clickedMenuItem = sender as MenuItem;
+            string menuItemTag = clickedMenuItem.Tag?.ToString();
             OpenFileDialog openFileDialog = new()
             {
                 Filter = "Бинарные файлы (*.dat)|*.dat"
             };
             if (openFileDialog.ShowDialog() == true)
             {
-                
                 try
                 {
-                    using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open);
-#pragma warning disable SYSLIB0011
-                    BinaryFormatter formatter = new BinaryFormatter();
-#pragma warning restore SYSLIB0011
-                    if (formatter.Deserialize(fs) is List<MySpriteForBinary> { Count: not 0 } loadedShapes)
+                    List<MySpriteForEncrypt> encryptedList = new List<MySpriteForEncrypt>();
+                    if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                     {
+                        foreach (var kvp in CurrentFunctionalPlugins)
+                        {
+                            if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                            {
+                                using (FileStream fsPlugin = new FileStream(openFileDialog.FileName, FileMode.Open))
+                                {
+                                    
+#pragma warning disable SYSLIB0011
+                                    BinaryFormatter formatterPlugin = new BinaryFormatter();
+#pragma warning restore SYSLIB0011
+                                    encryptedList = (List<MySpriteForEncrypt>)formatterPlugin.Deserialize(fsPlugin);
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (encryptedList.Count > 0)
+                    {
+                       
+                        List<MySprite> decryptedSprites = new List<MySprite>();
+                        if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
+                        {
+                            foreach (var kvp in CurrentFunctionalPlugins)
+                            {
+                                if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                                {
+                                    decryptedSprites = kvp.Value.Item2.DecryptData(encryptedList, ToolArr);
+                                }
+                            }
+                        }
+                        // Отображаем дешифрованные данные
                         SpritesList.Clear();
                         Canvas.Children.Clear();
-                        foreach (var item in loadedShapes)
+                        foreach (var item in decryptedSprites)
                         {
-                            var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
-                                (SolidColorBrush)new BrushConverter().ConvertFromString(item.BackgroundColor), 
-                                (SolidColorBrush)new BrushConverter().ConvertFromString(item.PenColor),
-                                item.Points, 
-                                item.Angle);
-                            shape.StrokeThickness = item.StrokeThickness;
-                        
-                            SpritesList.Add(shape);
+                            // Добавляем дешифрованные фигуры на холст и в список SpritesList
+                            SpritesList.Add(item);
                             ToolNow = ToolArr[item.idOfClassShape];
-                            DrawShapeOnCanvas(Canvas, shape);
+                            DrawShapeOnCanvas(Canvas, item);
 
-                            Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
-                            Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
-                            Canvas.Children[shape.CanvasIndex].MouseEnter += Shape_MouseEnter;
-                            Canvas.Children[shape.CanvasIndex].MouseLeave += Shape_MouseLeave;
+                            Canvas.Children[item.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
+                            Canvas.Children[item.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
+                            Canvas.Children[item.CanvasIndex].MouseEnter += Shape_MouseEnter;
+                            Canvas.Children[item.CanvasIndex].MouseLeave += Shape_MouseLeave;
                         }
-                    
+
                         MessageBox.Show($"Ваши фигуры успешно десериализованы!");
+                    }
+                    else
+                    {
+                        using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.Open);
+#pragma warning disable SYSLIB0011
+                        BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning restore SYSLIB0011
+                    
+                        if (formatter.Deserialize(fs) is List<MySpriteForBinary> { Count: not 0 } loadedShapes)
+                        {
+                            SpritesList.Clear();
+                            Canvas.Children.Clear();
+                            foreach (var item in loadedShapes)
+                            {
+                                var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
+                                    (SolidColorBrush)new BrushConverter().ConvertFromString(item.BackgroundColor), 
+                                    (SolidColorBrush)new BrushConverter().ConvertFromString(item.PenColor),
+                                    item.Points, 
+                                    item.Angle);
+                                shape.StrokeThickness = item.StrokeThickness;
+                        
+                                SpritesList.Add(shape);
+                                ToolNow = ToolArr[item.idOfClassShape];
+                                DrawShapeOnCanvas(Canvas, shape);
+
+                                Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
+                                Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
+                                Canvas.Children[shape.CanvasIndex].MouseEnter += Shape_MouseEnter;
+                                Canvas.Children[shape.CanvasIndex].MouseLeave += Shape_MouseLeave;
+                            }
+                    
+                            MessageBox.Show($"Ваши фигуры успешно десериализованы!");
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -360,6 +475,8 @@ public partial class MainWindow : Window
         }
         void XMLSave_OnClick(object sender, RoutedEventArgs e)
         {
+            MenuItem clickedMenuItem = sender as MenuItem;
+            string menuItemTag = clickedMenuItem.Tag?.ToString();
             SaveFileDialog saveFileDialog = new()
             {
                 Filter = "XML файлы (*.xml)|*.xml|Все файлы (*.*)|*.*"
@@ -371,28 +488,51 @@ public partial class MainWindow : Window
                     saveFileDialog.FileName += ".xml";
                 }
                 using FileStream fs = new FileStream(saveFileDialog.FileName, FileMode.Create);
-
-                List<MySpriteForXML> list = new();
-                foreach (var item in SpritesList)
+                if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                 {
-                    list.Add(new()
+                    List<MySpriteForEncrypt> list = new();
+                    
+                    foreach (var kvp in CurrentFunctionalPlugins)
                     {
-                        Angle = item._rotationAngle,
-                        BackgroundColor = item.FillColor,
-                        Points = item.Points,
-                        PenColor = item.StrokeColor,
-                        StrokeThickness = item.StrokeThickness,
-                        idOfClassShape = item.idOfClassShape,
-                    });
+                        if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                        {
+                            list = kvp.Value.Item2.EncryptData(SpritesList);
+                            break; // Выходим из цикла, если плагин найден
+                        }
+                    }
+                    
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
+                    serializer.Serialize(fs, list);
                 }
+                else
+                {
+                    List<MySpriteForXML> list = new();
+                    foreach (var item in SpritesList)
+                    {
+                        list.Add(new()
+                        {
+                            Angle = item._rotationAngle,
+                            BackgroundColor = item.FillColor,
+                            Points = item.Points,
+                            PenColor = item.StrokeColor,
+                            StrokeThickness = item.StrokeThickness,
+                            idOfClassShape = item.idOfClassShape,
+                            countOfPoints = item.countOfPoints
+                        });
+                    }
             
-                XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForXML>));
-                serializer.Serialize(fs, list);
+                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForXML>));
+                    serializer.Serialize(fs, list);
+                }
+                
             }
         }
+        
         void XMLOpen_OnClick(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new()
+            MenuItem clickedMenuItem = sender as MenuItem;
+            string menuItemTag = clickedMenuItem.Tag?.ToString();
+             OpenFileDialog openFileDialog = new()
             {
                 Filter = "XML файлы (*.xml)|*.xml"
             };
@@ -400,35 +540,84 @@ public partial class MainWindow : Window
             {
                 try
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForXML>));
-                    using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
-
-                    if (serializer.Deserialize(fs) is List<MySpriteForXML> { Count: not 0 } loadedShapes)
+                    List<MySpriteForEncrypt> encryptedList = new List<MySpriteForEncrypt>();
+                    if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
                     {
+                        foreach (var kvp in CurrentFunctionalPlugins)
+                        {
+                            if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                            {
+                                using (FileStream fsPlugin = new FileStream(openFileDialog.FileName, FileMode.Open))
+                                {
+                                    XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForEncrypt>));
+                                    encryptedList = (List<MySpriteForEncrypt>)serializer.Deserialize(fsPlugin);
+                                }
+                            }
+                        }
+                    }
+                    if (encryptedList.Count > 0)
+                    {
+                        // Дешифруем данные с использованием плагина шифрования
+                        List<MySprite> decryptedSprites = new List<MySprite>();
+                        if (CurrentFunctionalPlugins != null && CurrentFunctionalPlugins.Count > 0 && menuItemTag != "Default")
+                        {
+                            foreach (var kvp in CurrentFunctionalPlugins)
+                            {
+                                if (kvp.Value.Item1 && kvp.Value.Item2.Name == menuItemTag)
+                                {
+                                    decryptedSprites = kvp.Value.Item2.DecryptData(encryptedList, ToolArr);
+                                }
+                            }
+                        }
+                        // Отображаем дешифрованные данные
                         SpritesList.Clear();
                         Canvas.Children.Clear();
-                        foreach (var item in loadedShapes)
+                        foreach (var item in decryptedSprites)
                         {
-                            var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
-                                item.BackgroundColor, 
-                                item.PenColor,
-                                item.Points, 
-                                item.Angle);
-                            shape.StrokeThickness = item.StrokeThickness;
-                        
-                            SpritesList.Add(shape);
+                            // Добавляем дешифрованные фигуры на холст и в список SpritesList
+                            SpritesList.Add(item);
                             ToolNow = ToolArr[item.idOfClassShape];
-                            DrawShapeOnCanvas(Canvas, shape);
+                            DrawShapeOnCanvas(Canvas, item);
 
-                            Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
-                            Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
-                            Canvas.Children[shape.CanvasIndex].MouseEnter += Shape_MouseEnter;
-                            Canvas.Children[shape.CanvasIndex].MouseLeave += Shape_MouseLeave;
+                            Canvas.Children[item.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
+                            Canvas.Children[item.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
+                            Canvas.Children[item.CanvasIndex].MouseEnter += Shape_MouseEnter;
+                            Canvas.Children[item.CanvasIndex].MouseLeave += Shape_MouseLeave;
                         }
-                    
-                        MessageBox.Show($"Ваши фигуры успешно десериализованы");
-                    }
 
+                        MessageBox.Show($"Ваши фигуры успешно десериализованы!");
+                    }
+                    else
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(List<MySpriteForXML>));
+                        using FileStream fs = new FileStream(openFileDialog.FileName, FileMode.OpenOrCreate);
+
+                        if (serializer.Deserialize(fs) is List<MySpriteForXML> { Count: not 0 } loadedShapes)
+                        {
+                            SpritesList.Clear();
+                            Canvas.Children.Clear();
+                            foreach (var item in loadedShapes)
+                            {
+                                var shape = ToolArr[item.idOfClassShape].Factory.CreateShape(
+                                    item.BackgroundColor, 
+                                    item.PenColor,
+                                    item.Points, 
+                                    item.Angle);
+                                shape.StrokeThickness = item.StrokeThickness;
+                        
+                                SpritesList.Add(shape);
+                                ToolNow = ToolArr[item.idOfClassShape];
+                                DrawShapeOnCanvas(Canvas, shape);
+
+                                Canvas.Children[shape.CanvasIndex].PreviewMouseUp += Canvas_OnMouseUp;
+                                Canvas.Children[shape.CanvasIndex].PreviewMouseWheel += Window_MouseWheel;
+                                Canvas.Children[shape.CanvasIndex].MouseEnter += Shape_MouseEnter;
+                                Canvas.Children[shape.CanvasIndex].MouseLeave += Shape_MouseLeave;
+                            }
+                    
+                            MessageBox.Show($"Ваши фигуры успешно десериализованы");
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -449,7 +638,7 @@ public partial class MainWindow : Window
                     var shape = factory.CreateShape(Brushes.Black,Brushes.Black ,temp, 0);
                     if (!ToolArr.ContainsKey(shape.idOfClassShape))
                     {
-                        ToolArr.Add(shape.idOfClassShape, new ToolType(factory,shape.DrawStrategy,2));
+                        ToolArr.Add(shape.idOfClassShape, new ToolType(factory,shape.DrawStrategy,shape.countOfPoints));
                     }
 
 
@@ -471,6 +660,55 @@ public partial class MainWindow : Window
                     ToolNow = ToolArr[shape.idOfClassShape];
                 }
         }
+        
+        void LoadPluginFunc(object sender, RoutedEventArgs e)
+        {
+                PluginLoader pluginLoader = new();
+                var list = pluginLoader.LoadPluginFunctionality();
+                foreach (var item in list)
+                {
+                    if (CurrentFunctionalPlugins.TryGetValue(item.GetType().Name, out var result))
+                    {
+                        MessageBox.Show($"Функциональность '{item.Name}' уже загружена.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        continue;
+                    }
+
+                    CurrentFunctionalPlugins[item.GetType().Name] = Tuple.Create(true, item);
+                
+                    MenuItem menuItem = new()
+                    {
+                        Header = item.Name,
+                    };
+                   
+                    MenuItem saveBin = new MenuItem();
+                    saveBin.Header = "Сериализовать в Bin";
+                    saveBin.Click += BinarySave_OnClick;
+                    saveBin.Tag = item.Name;
+                    menuItem.Items.Add(saveBin);
+                    
+                    MenuItem SaveXML = new MenuItem();
+                    SaveXML.Header = "Сериализовать в XML";
+                    SaveXML.Click += XMLSave_OnClick;
+                    SaveXML.Tag = item.Name;
+                    menuItem.Items.Add(SaveXML);
+                        
+                    MenuItem OpenBin = new MenuItem();
+                    OpenBin.Header = "Десериализовать из Bin";
+                    OpenBin.Click += OpenBinary_Click;
+                    OpenBin.Tag = item.Name;
+                    menuItem.Items.Add(OpenBin);
+                        
+                    MenuItem OpenXML = new MenuItem();
+                    OpenXML.Header = "Десериализовать из XML";
+                    OpenXML.Click += XMLOpen_OnClick;
+                    OpenXML.Tag = item.Name;
+                    menuItem.Items.Add(OpenXML);    
+                    
+                    FuncPanel.Items.Add(menuItem);
+                }
+        }
+        
+        
         
         void Canvas_OnMouseUp(object sender, MouseButtonEventArgs e)
         {

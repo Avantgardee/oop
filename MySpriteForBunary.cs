@@ -19,5 +19,6 @@ public class MySpriteForBinary
 
     
     public string PenColor { get; set; }
+    public int countOfPoints { get; set; }
     
 }

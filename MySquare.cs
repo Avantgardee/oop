@@ -13,6 +13,7 @@ namespace WpfApp2;
 
 public class MySquare : MyRectangle
 {
+    public override int countOfPoints => 2;
     public override object idOfClassShape => "6";
     public MySquare( Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
@@ -38,4 +39,6 @@ public class MySquare : MyRectangle
         Point bottomLeftPoint = new Point(topLeftPoint.X, newBottomRightPoint.Y);
         AddPoint(bottomLeftPoint);
     }
+    public override string ToString() =>
+        $"Квадрат";
 }

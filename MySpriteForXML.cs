@@ -19,7 +19,7 @@ public class MySpriteForXML
 
     [XmlIgnore]
     public Brush PenColor { get; set; }
-
+    public int countOfPoints { get; set; }
   
     public string BackgroundColorString
     {

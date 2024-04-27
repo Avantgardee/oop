@@ -11,16 +11,17 @@
 
 
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" Height="40" ZIndex="1">
-            <Menu DockPanel.Dock="Top" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="40">
-                <MenuItem Header="Сериализация/Десериализация" Margin="10">
-                    <MenuItem Header="Сериализовать в Bin" Click="BinarySave_OnClick" />
-                    <MenuItem Header="Сериализовать в XML" Click="XMLSave_OnClick" />
-                    <MenuItem Header="Десериализовать из Bin" Click="OpenBinary_Click" />
-                    <MenuItem Header="Десериализовать из XML" Click="XMLOpen_OnClick" />
-
+        <DockPanel DockPanel.Dock="Top" Height="40" ZIndex="1" >
+            <Menu DockPanel.Dock="Top"  VerticalAlignment="Center" VerticalContentAlignment="Center" Height="40" x:Name="FuncPanel">
+                <MenuItem Header="Сериализация/Десериализация" Margin="10" >
+                    <MenuItem Header="Сериализовать в Bin" Click="BinarySave_OnClick" Tag="Default"/>
+                    <MenuItem Header="Сериализовать в XML" Click="XMLSave_OnClick" Tag="Default"/>
+                    <MenuItem Header="Десериализовать из Bin" Click="OpenBinary_Click" Tag="Default"/>
+                    <MenuItem Header="Десериализовать из XML" Click="XMLOpen_OnClick" Tag="Default"/>
                 </MenuItem>
                 <MenuItem Header="Загрузить плагин" Margin="10" Click="LoadPlugin"/>
+                <MenuItem Header="Загрузить функциональный плагин" Margin="10" Click="LoadPluginFunc"/>
+                
             </Menu>
         </DockPanel>
         <Grid>
@@ -42,13 +43,13 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
+                        <!-- <RowDefinition Height="Auto" /> -->
                     </Grid.RowDefinitions>
 
                     <!-- Заливка -->
@@ -67,28 +68,28 @@
                                           Width="60" />
                     </DockPanel>
                     
-                    <!-- Кнопки инструментов -->
-                    <Button Grid.Row="2" Background="Transparent" Height="60" Width="60" Tag="0" Click="ToolBtnClick">
-                        <Image Source="./assets/el.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="3" Background="White" Height="60" Width="60" Tag="1" Click="ToolBtnClick">
-                        <Image Source="./assets/sirq.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="4" Background="White" Height="60" Width="60" Tag="2" Click="ToolBtnClick">
-                        <Image Source="./assets/line.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="5" Background="White" Height="60" Width="60" Tag="3" Click="ToolBtnClick">
-                        <Image Source="./assets/pol.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="6" Background="White" Height="60" Width="60" Tag="4" Click="ToolBtnClick">
-                        <Image Source="./assets/tri.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="7" Background="White" Height="60" Width="60" Tag="5" Click="ToolBtnClick">
-                        <Image Source="./assets/req.png" Width="60" Height="60" />
-                    </Button>
-                    <Button Grid.Row="8" Background="White" Height="60" Width="60" Tag="6" Click="ToolBtnClick">
-                        <Image Source="./assets/sq.png" Width="60" Height="60" />
-                    </Button>
+                    <!-- ~1~ Кнопки инструментов @1@ -->
+                    <!-- <Button Grid.Row="2" Background="Transparent" Height="60" Width="60" Tag="0" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/el.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="3" Background="White" Height="60" Width="60" Tag="1" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/sirq.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="4" Background="White" Height="60" Width="60" Tag="2" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/line.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="5" Background="White" Height="60" Width="60" Tag="3" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/pol.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="6" Background="White" Height="60" Width="60" Tag="4" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/tri.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="7" Background="White" Height="60" Width="60" Tag="5" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/req.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
+                    <!-- <Button Grid.Row="8" Background="White" Height="60" Width="60" Tag="6" Click="ToolBtnClick"> -->
+                    <!--     <Image Source="./assets/sq.png" Width="60" Height="60" /> -->
+                    <!-- </Button> -->
                 </Grid>
             </ScrollViewer>
         </Grid>

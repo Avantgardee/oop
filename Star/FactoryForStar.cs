@@ -1,9 +1,8 @@
 using System.Windows;
 using System.Windows.Media;
 using components;
-using Star;
 
-namespace Heart;
+namespace Star;
 
 public class FactoryForStar : AbstractFactory
 {

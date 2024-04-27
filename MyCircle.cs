@@ -14,6 +14,8 @@ namespace WpfApp2;
 public class MyCircle : MyEllipse
 {
     public override object idOfClassShape => "1";
+
+    public override int countOfPoints => 2;
     public MyCircle(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
@@ -28,4 +30,6 @@ public class MyCircle : MyEllipse
         Points = new Point[] { topLeft, new Point(topLeft.X + 2 * RadiusX, topLeft.Y + 2 * RadiusX) };
         CalculateCenter();
     }
+    public override string ToString() =>
+        $"Круг";
 }

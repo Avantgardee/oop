@@ -19,6 +19,7 @@ public class MyEllipse : MySprite
     public double RadiusY { get; set; }
 
     public override object idOfClassShape => "0";
+    public override int countOfPoints => 2;
     public MyEllipse(Brush fillColor, Brush strokeColor, Point[] points, double rotationAngle)
         : base(fillColor, strokeColor, points, rotationAngle)
     {
@@ -39,5 +40,6 @@ public class MyEllipse : MySprite
         DrawStrategy = new EllipseDrawStrategy();
     }
     
-    
+    public override string ToString() =>
+        $"Эллипс";
 }
